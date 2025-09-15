@@ -23,6 +23,12 @@
         </activity>
         
         <activity
+            feat/profile
+            android:name=".ProfileActivity"
+            android:exported="true"/>
+
+        
+   <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.JusCom.NoActionBar" />
@@ -40,6 +46,7 @@
             android:name=".MainActivity"
             android:exported="false" />
             
+
     </application>
 
 </manifest>
