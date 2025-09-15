@@ -2,8 +2,21 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.JusCom" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorPrimaryVariant">@color/primary_blue_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent_teal</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/background_white</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
     </style>
 
     <style name="Theme.JusCom" parent="Base.Theme.JusCom" />
+    
+    <style name="Theme.JusCom.NoActionBar" parent="Theme.JusCom">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
