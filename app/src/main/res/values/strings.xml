@@ -21,6 +21,18 @@
     
     <!-- Home Screen -->
     <string name="home_title">JusCommunity</string>
+    <string name="home_welcome">Bem-vindo de volta, Dr.</string>
+    <string name="home_description">Acesse as principais discussões jurídicas e conecte-se com a comunidade legal.</string>
+    <string name="popular_rooms">Discussões em Destaque</string>
+    <string name="view_all">Explorar Todas</string>
+    
+    <!-- User Info -->
+    <string name="user_name">Dr. João Silva</string>
+    <string name="user_points">1.250 pontos</string>
+    <string name="user_level">Advogado Sênior</string>
+    <string name="user_specialty">Direito Civil</string>
+    <string name="user_oab">OAB/SP 123.456</string>
+    <string name="user_experience">15 anos de experiência</string>
     <string name="menu_profile">Perfil</string>
     <string name="menu_settings">Configurações</string>
     <string name="menu_help">Ajuda</string>
@@ -43,4 +55,24 @@
     <!-- Toast Messages -->
     <string name="recovery_link_sent">Link de recuperação enviado!</string>
     <string name="opening_profile">Abrindo perfil…</string>
+    
+    <!-- Room List Screen -->
+    <string name="room_list_title">Todas as Salas</string>
+    <string name="subscribers_count">%d inscritos</string>
+    <string name="room_category">%s</string>
+    
+    <!-- Room Detail Screen -->
+    <string name="room_detail_title">Detalhes da Sala</string>
+    <string name="subscribe_button">Inscrever-se</string>
+    <string name="unsubscribe_button">Cancelar inscrição</string>
+    <string name="subscribed_success">Inscrição realizada com sucesso!</string>
+    <string name="unsubscribed_success">Inscrição cancelada com sucesso!</string>
+    <string name="questions_answers">Perguntas e Respostas</string>
+    <string name="view_qa">Ver Q&amp;A</string>
+    
+    <!-- Q&A Screen -->
+    <string name="qa_title">Perguntas e Respostas</string>
+    <string name="ask_question">Fazer pergunta</string>
+    <string name="no_questions">Nenhuma pergunta ainda</string>
+    <string name="be_first_question">Seja o primeiro a fazer uma pergunta!</string>
 </resources>

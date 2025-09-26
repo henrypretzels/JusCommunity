@@ -3,16 +3,21 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     
-    <!-- JusCommunity Color Scheme -->
-    <color name="primary_blue">#2196F3</color>
-    <color name="primary_blue_dark">#1976D2</color>
-    <color name="accent_teal">#009688</color>
-    <color name="light_gray">#F5F5F5</color>
-    <color name="medium_gray">#BDBDBD</color>
-    <color name="dark_gray">#424242</color>
-    <color name="error_red">#F44336</color>
-    <color name="success_green">#4CAF50</color>
-    <color name="background_white">#FAFAFA</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+    <!-- JusCommunity Professional Legal Color Scheme -->
+    <color name="primary_blue">#1A365D</color>
+    <color name="primary_blue_dark">#0F2438</color>
+    <color name="accent_teal">#2D5A27</color>
+    <color name="accent_gold">#D4AF37</color>
+    <color name="light_gray">#F8F9FA</color>
+    <color name="medium_gray">#6C757D</color>
+    <color name="dark_gray">#343A40</color>
+    <color name="error_red">#DC3545</color>
+    <color name="success_green">#28A745</color>
+    <color name="background_white">#FFFFFF</color>
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#6C757D</color>
+    <color name="legal_blue">#1E3A8A</color>
+    <color name="legal_blue_light">#3B82F6</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="divider_color">#E5E7EB</color>
 </resources>

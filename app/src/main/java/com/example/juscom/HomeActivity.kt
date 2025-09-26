@@ -10,6 +10,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.juscom.databinding.ActivityHomeBinding
 import com.google.android.material.navigation.NavigationView
 
@@ -17,6 +18,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityHomeBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var roomAdapter: RoomAdapter
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         
         setupToolbar()
         setupDrawer()
+        setupUserInfo()
+        setupRecyclerView()
         setupClickListeners()
         setupOnBackPressed()
     }
@@ -47,6 +51,42 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navigationView.setNavigationItemSelectedListener(this)
     }
     
+    private fun setupUserInfo() {
+        // Configurar informações do usuário (dados fake por enquanto)
+        binding.userNameTextView.text = getString(R.string.user_name)
+        binding.userPointsTextView.text = getString(R.string.user_points)
+        binding.userLevelTextView.text = getString(R.string.user_level)
+        binding.userOabTextView.text = getString(R.string.user_oab)
+        
+        // Configurar avatar do usuário
+        binding.userAvatarImageView.setImageResource(R.drawable.scales)
+    }
+    
+    private fun setupRecyclerView() {
+        val rooms = getSampleRooms()
+        roomAdapter = RoomAdapter(rooms) { room ->
+            val intent = Intent(this, RoomDetailActivity::class.java)
+            intent.putExtra("room", room)
+            startActivity(intent)
+        }
+        
+        binding.roomsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = roomAdapter
+        }
+    }
+    
+    private fun getSampleRooms(): List<Room> {
+        return listOf(
+            Room(1, "Direito Civil", "Discussões sobre direito civil, contratos e obrigações", "Civil", 1250),
+            Room(2, "Direito Penal", "Debates sobre direito penal e processo penal", "Penal", 980),
+            Room(3, "Direito Trabalhista", "Temas de direito do trabalho e previdenciário", "Trabalhista", 750),
+            Room(4, "Direito Tributário", "Discussões sobre direito tributário e fiscal", "Tributário", 650),
+            Room(5, "Direito Constitucional", "Debates sobre direito constitucional", "Constitucional", 890),
+            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720)
+        ).sortedByDescending { it.subscribersCount }
+    }
+    
     private fun setupClickListeners() {
         // Listener for the profile image in the navigation header
         val headerView = binding.navigationView.getHeaderView(0)
@@ -56,6 +96,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
             // Show a toast or navigate to the profile activity
             Toast.makeText(this, R.string.opening_profile, Toast.LENGTH_SHORT).show()
+        }
+        
+        // Listener for user header card
+        binding.userHeaderCard.setOnClickListener {
+            Toast.makeText(this, "Abrindo perfil do usuário", Toast.LENGTH_SHORT).show()
+        }
+        
+        // Listener for "Ver todas as salas" button
+        binding.viewAllRoomsButton.setOnClickListener {
+            val intent = Intent(this, RoomListActivity::class.java)
+            startActivity(intent)
         }
     }
     
