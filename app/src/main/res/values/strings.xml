@@ -35,4 +35,12 @@
     <string name="error_invalid_email">Email inválido</string>
     <string name="error_password_mismatch">As senhas não coincidem</string>
     <string name="error_password_short">Senha deve ter pelo menos 6 caracteres</string>
+    <string name="pw_recovery_title">Recuperação de Senha</string>
+    <string name="pw_recovery_instruction">Insira o seu email para receber um link de recuperação de senha.</string>
+    <string name="send_recovery_link_button">Enviar Link</string>
+    <string name="back_to_login">Voltar</string>
+
+    <!-- Toast Messages -->
+    <string name="recovery_link_sent">Link de recuperação enviado!</string>
+    <string name="opening_profile">Abrindo perfil…</string>
 </resources>

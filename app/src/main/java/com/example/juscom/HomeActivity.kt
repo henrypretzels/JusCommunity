@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -24,6 +26,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupToolbar()
         setupDrawer()
         setupClickListeners()
+        setupOnBackPressed()
     }
     
     private fun setupToolbar() {
@@ -45,7 +48,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     
     private fun setupClickListeners() {
-        // Aqui você pode adicionar listeners para elementos da tela principal
+        // Listener for the profile image in the navigation header
+        val headerView = binding.navigationView.getHeaderView(0)
+        val profileImageView = headerView.findViewById<ImageView>(R.id.logoImageView)
+        profileImageView.setOnClickListener {
+            // Close the drawer before navigating
+            drawerLayout.closeDrawer(GravityCompat.START)
+            // Show a toast or navigate to the profile activity
+            Toast.makeText(this, R.string.opening_profile, Toast.LENGTH_SHORT).show()
+        }
     }
     
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -71,12 +82,18 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
     
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
+    private fun setupOnBackPressed() {
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    // Disable this callback and call the default back pressed behavior
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 }
