@@ -25,7 +25,14 @@
     <string name="home_description">Acesse as principais discussões jurídicas e conecte-se com a comunidade legal.</string>
     <string name="popular_rooms">Discussões em Destaque</string>
     <string name="view_all">Explorar Todas</string>
-    
+    <string name="search_rooms_hint">Pesquisar salas pelo nome...</string>
+
+    <!-- Strings para a Seção de Materiais de Estudo -->
+    <string name="study_materials_title">Materiais de Estudo</string>
+    <string name="study_materials_description">Acesse resumos, artigos e outros materiais compartilhados pela comunidade.</string>
+    <string name="view_materials_button">Ver Materiais</string>
+
+
     <!-- User Info -->
     <string name="user_name">Dr. João Silva</string>
     <string name="user_points">1.250 pontos</string>

@@ -180,35 +180,21 @@
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Fixed Description Text -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/home_description"
-            android:textColor="@color/text_secondary"
-            android:textSize="16sp"
-            android:lineSpacingExtra="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userHeaderCard" />
+
 
         <!-- Fixed Header Section -->
         <LinearLayout
             android:id="@+id/headerSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView">
+            app:layout_constraintTop_toBottomOf="@+id/searchCard">
 
-            <TextView
+
+        <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -219,13 +205,13 @@
 
             <Button
                 android:id="@+id/viewAllRoomsButton"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/view_all"
-                android:textSize="14sp"
                 android:backgroundTint="@color/primary_blue"
+                android:text="@string/view_all"
                 android:textColor="@color/white"
-                style="@style/Widget.Material3.Button.TextButton" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -248,6 +234,53 @@
                 android:paddingBottom="16dp" />
 
         </ScrollView>
+
+        <!-- Barra de Pesquisa -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/searchCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView">
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="12dp"
+                android:hint="@string/search_rooms_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:padding="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <!-- TextView de Descrição -->
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/home_description"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userHeaderCard" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
