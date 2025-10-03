@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Night mode overrides for JusCommunity -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand / accents remain similar but can be slightly adjusted if desired -->
+    <color name="primary_blue">#3B82F6</color>
+    <color name="primary_blue_dark">#1E3A8A</color>
+    <color name="accent_teal">#2D5A27</color>
+    <color name="accent_gold">#D4AF37</color>
+
+    <!-- Dark surfaces and text -->
+    <color name="light_gray">#1F2937</color>
+    <color name="medium_gray">#9CA3AF</color>
+    <color name="dark_gray">#111827</color>
+    <color name="error_red">#EF4444</color>
+    <color name="success_green">#10B981</color>
+    <color name="background_white">#0B0F14</color>
+    <color name="text_primary">#F3F4F6</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="legal_blue">#3B82F6</color>
+    <color name="legal_blue_light">#60A5FA</color>
+    <color name="card_background">#111827</color>
+    <color name="divider_color">#1F2937</color>
+</resources>
+

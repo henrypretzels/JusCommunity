@@ -90,7 +90,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupClickListeners() {
         // Listener for the profile image in the navigation header
         val headerView = binding.navigationView.getHeaderView(0)
-        val profileImageView = headerView.findViewById<ImageView>(R.id.logoImageView)
+        val profileImageView: ImageView? = headerView.findViewById(R.id.logoImageView)
         profileImageView.setOnClickListener {
             // Close the drawer before navigating
             drawerLayout.closeDrawer(GravityCompat.START)

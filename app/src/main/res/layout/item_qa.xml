@@ -6,7 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceVBriant">
+
+    <LinearLaackgroundColor="?attr/colorSurfaceVariant">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,20 +19,28 @@
 
         <TextView
             android:id="@+id/questionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pergunta aqui"
-            android:textColor="@color/text_primary"
+            android:layout_width="match_
+   parent"android:textColor="?attr/colorOnSurf"
+            android:layout_height="
+            android:textStyle="bold"
+wrap_cont   android:layout_marginBottom="12dp" /e
+nt"            
+        <TextView            android:text="Pergunta aqui"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottoi"
+            android:textColor=m?a=tr/colorOnSur"12dp" />
 
         <TextView
-            android:id="@+id/answerText"
-            android:layout_width="match_parent"
+            android:id="@+id/answerTeom="12dp" />
+
+        <LinearLayxutt"
+            android:layout_width="match_parent"            
             android:layout_height="wrap_content"
             android:text="Resposta aqui"
-            android:textColor="@color/text_secondary"
+            android:textColor="nter_vertical">?attr/colorOnSurfaceVariant"
+
             android:textSize="14sp"
             android:lineSpacingExtra="2dp"
             android:layout_marginBottom="12dp" />
@@ -40,31 +51,39 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
+
             <TextView
-                android:id="@+id/authorText"
+                android:id="@+id/aut="wrap_conhent"
+                android:layout_heightorText"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="wrap_conteurfaceVariant"
+                android:textSize="12tp""
+                android:layout_weight="1"                
                 android:text="Autor"
-                android:textColor="@color/primary_blue"
+                andro
+                android:id="@+id/liid:textC
+olor="?attr/coloandroid:layout_width="wrap_content"rPrimary"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle=rtidas"
+                android:textColor=""bold" />
 
             <TextView
                 android:id="@+id/dateText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                and
+
+</com.google.android.raterial.cordida:layout_heigew>ht="wrap_content"                
                 android:text="Data"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 android:layout_marginEnd="8dp" />
 
             <TextView
                 android:id="@+id/likesText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content"                
                 android:text="0 curtidas"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp" />
 
         </LinearLayout>
