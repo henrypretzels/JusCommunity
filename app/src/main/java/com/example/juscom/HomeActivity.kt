@@ -97,9 +97,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Room(1, "Direito Civil", "Discussões sobre direito civil, contratos e obrigações", "Civil", 1250),
             Room(2, "Direito Penal", "Debates sobre direito penal e processo penal", "Penal", 980),
             Room(3, "Direito Trabalhista", "Temas de direito do trabalho e previdenciário", "Trabalhista", 750),
-                Room(4, "Direito Tributário", "Discussões sobre direito tributário e fiscal", "Tributário", 650),
+            Room(4, "Direito Tributário", "Discussões sobre direito tributário e fiscal", "Tributário", 650),
             Room(5, "Direito Constitucional", "Debates sobre direito constitucional", "Constitucional", 890),
-            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720)
+            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720),
+            Room(7, "Direito Empresarial", "Discussões sobre direito empresarial e societário", "Empresarial", 580),
+            Room(8, "Direito Ambiental", "Temas de direito ambiental e sustentabilidade", "Ambiental", 420),
+            Room(9, "Direito da Família", "Debates sobre direito de família e sucessões", "Família", 680),
+            Room(10, "Direito do Consumidor", "Discussões sobre direito do consumidor", "Consumidor", 540)
         ).sortedByDescending { it.subscribersCount }
     }
 

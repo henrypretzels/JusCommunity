@@ -26,6 +26,7 @@
     <string name="popular_rooms">Discussões em Destaque</string>
     <string name="view_all">Explorar Todas</string>
     <string name="search_rooms_hint">Pesquisar salas pelo nome...</string>
+    <string name="no_results">Nenhum resultado encontrado.</string>
 
     <!-- Strings para a Seção de Materiais de Estudo -->
     <string name="study_materials_title">Materiais de Estudo</string>
