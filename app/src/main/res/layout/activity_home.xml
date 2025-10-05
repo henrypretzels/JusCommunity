@@ -6,290 +6,265 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".HomeActivity"
     tools:openDrawer="start">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Main Content -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorSurface">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:elevation="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextColor="?attr/colorOnPrimary" />
+                android:layout_height="wrap_content"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <!-- Fixed User Header -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/userHeaderCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant"
-            app:strokeColor="?attr/colorOutline"
-            app:strokeWidth="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-
-                <LinearLayout
+                <!-- User Header Card - Inline implementation -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/user_header_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:layout_margin="16dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                    app:strokeColor="?attr/colorOutline"
+                    app:strokeWidth="1dp">
 
-                    <!-- Top Row: Avatar and Basic Info -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:orientation="vertical"
+                        android:padding="24dp">
 
-                        <ImageView
-                            android:id="@+id/userAvatarImageView"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginEnd="20dp"
-                            android:scaleType="centerCrop"
-                            android:background="@drawable/circular_image"
-                            android:clipToOutline="true"
-                            android:src="@drawable/scales" />
-
+                        <!-- Top Row: Avatar and Basic Info -->
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
 
-                            <TextView
-                                android:id="@+id/welcomeTextView"
+                            <ImageView
+                                android:id="@+id/userAvatarImageView"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_marginEnd="20dp"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/circular_image"
+                                android:clipToOutline="true"
+                                android:src="@drawable/scales" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/welcomeTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/home_welcome"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textSize="14sp"
+                                    android:layout_marginBottom="4dp" />
+
+                                <TextView
+                                    android:id="@+id/userNameTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/user_name"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginBottom="8dp" />
+
+                                <TextView
+                                    android:id="@+id/userOabTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/user_oab"
+                                    android:textColor="?attr/colorPrimary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:background="@drawable/oab_badge"
+                                    android:paddingStart="12dp"
+                                    android:paddingEnd="12dp"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/home_welcome"                                
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="14sp"
-                                android:layout_marginBottom="4dp" />
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/userPointsTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/user_points"
+                                    android:textColor="?attr/colorSecondary"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/user_experience"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textSize="11sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Bottom Row: Specialties and Level -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
                             <TextView
-                                android:id="@+id/userNameTextView"
-                                android:layout_width="wrap_content"                                
-                                android:layout_height="wrap_content"
-                                android:text="@string/user_name"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="8dp" />
-
-                            <TextView
-                                android:id="@+id/userOabTextView"
+                                android:id="@+id/userLevelTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/user_oab"                                
-                                android:textColor="?attr/colorPrimary"
+                                android:text="@string/user_level"
+                                android:textColor="?attr/colorOnPrimary"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:background="@drawable/oab_badge"
+                                android:background="@drawable/category_badge"
                                 android:paddingStart="12dp"
                                 android:paddingEnd="12dp"
-                                android:paddingTop="6dp"
-                                android:paddingBottom="6dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:layout_marginEnd="12dp" />
 
                             <TextView
-                                android:id="@+id/userPointsTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"                                
-                                android:text="@string/user_points"
-                                android:textColor="?attr/colorSecondary"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/user_experience"
+                                android:layout_weight="1"
+                                android:text="@string/user_specialty"
                                 android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="11sp" />
+                                android:textSize="14sp"
+                                android:textStyle="italic" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
-                    <!-- Bottom Row: Specialties and Level -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                </com.google.android.material.card.MaterialCardView>
 
-                        <TextView
-                            android:id="@+id/userLevelTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/user_level"
-                            android:textColor="?attr/colorOnPrimary"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:background="@drawable/category_badge"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:layout_marginEnd="12dp" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/user_specialty"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp"
-                            android:textStyle="italic" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Removed duplicate descriptionTextView from merge; kept single instance below -->
-
-        <!-- Fixed Header Section -->
-        <LinearLayout
-            android:id="@+id/headerSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchCard">
-
-
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/popular_rooms"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/viewAllRoomsButton"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/view_all"
-                android:textSize="14sp"
-                android:backgroundTint="@color/primary_blue"
-                android:textColor="@color/white"
-                style="@style/Widget.Material3.Button.TextButton" />
-
-        </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Scrollable Content Area -->
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerSection">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/roomsRecyclerView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp" />
+                android:padding="16dp">
 
-        </ScrollView>
+                <!-- Search Bar -->
+                <EditText
+                    android:id="@+id/search_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/search_rooms"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="8dp"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Barra de Pesquisa -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/searchCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView">
+                <!-- Rooms Title -->
+                <TextView
+                    android:id="@+id/rooms_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/discussion_rooms"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    app:layout_constraintTop_toBottomOf="@id/search_edit_text"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:id="@+id/searchEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="12dp"
-                android:hint="@string/search_rooms_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:padding="16dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary" />
+                <!-- View All Rooms Button -->
+                <TextView
+                    android:id="@+id/view_all_rooms_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_all"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintBaseline_toBaselineOf="@id/rooms_title"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-        </com.google.android.material.card.MaterialCardView>
+                <!-- RecyclerView for the rooms list -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rooms_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_room"
+                    tools:itemCount="3"
+                    app:layout_constraintTop_toBottomOf="@id/rooms_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
+                <!-- ============================================== -->
+                <!-- IDEAL PLACEMENT FOR THE "NO RESULTS" TEXTVIEW  -->
+                <!-- ============================================== -->
+                <TextView
+                    android:id="@+id/no_results_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_results_found"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toTopOf="@+id/rooms_recycler_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/rooms_recycler_view"
+                    app:layout_constraintStart_toStartOf="@+id/rooms_recycler_view"
+                    app:layout_constraintEnd_toEndOf="@+id/rooms_recycler_view" />
 
-        <!-- TextView de Descrição -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:lineSpacingExtra="4dp"
-            android:text="@string/home_description"
-            android:textColor="@color/text_secondary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userHeaderCard" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/navigation_menu" />
 

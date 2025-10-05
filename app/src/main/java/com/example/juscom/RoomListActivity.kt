@@ -2,18 +2,25 @@ package com.example.juscom
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.juscom.databinding.ActivityRoomListBinding
 
 class RoomListActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityRoomListBinding
     private lateinit var roomAdapter: RoomAdapter
+    private lateinit var allRooms: List<Room> // A fonte de dados principal, carregada apenas uma vez.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoomListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Carrega a lista de salas uma única vez para otimizar a busca.
+        allRooms = getAllRooms()
 
         setupToolbar()
         setupRecyclerView()
@@ -21,17 +28,21 @@ class RoomListActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = getString(R.string.room_list_title)
+        supportActionBar?.title = "Salas de Discussão"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setupRecyclerView() {
-        val rooms = getAllRooms()
-        roomAdapter = RoomAdapter(rooms) { room ->
+        // Inicializa o adapter usando a lista completa.
+        roomAdapter = RoomAdapter(allRooms.toMutableList(), { room ->
+            // Ação de clique para cada item da lista.
             val intent = Intent(this, RoomDetailActivity::class.java)
             intent.putExtra("room", room)
             startActivity(intent)
-        }
+        }, { isEmpty ->
+            // Aqui você pode lidar com o estado de filtro vazio, se necessário.
+            // Por exemplo, mostrar uma mensagem de "nenhum resultado".
+        })
 
         binding.roomsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@RoomListActivity)
@@ -39,6 +50,51 @@ class RoomListActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+        val searchItem = menu.findItem(R.id.search_action)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.queryHint = "Buscar por nome, categoria..."
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            // Não é necessário para busca em tempo real.
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus() // Esconde o teclado
+                return true
+            }
+
+            // Filtra a lista a cada caractere digitado.
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterRooms(newText.orEmpty())
+                return true
+            }
+        })
+        return true
+    }
+
+    /**
+     * Filtra a lista 'allRooms' com base na query e atualiza o adapter.
+     */
+    private fun filterRooms(query: String) {
+        val filteredRooms = if (query.isBlank()) {
+            // Se a busca estiver vazia, exibe a lista completa.
+            allRooms
+        } else {
+            // Filtra a lista principal com base no nome, descrição ou categoria.
+            allRooms.filter { room ->
+                room.name.contains(query, ignoreCase = true) ||
+                        room.description.contains(query, ignoreCase = true) ||
+                        room.category.contains(query, ignoreCase = true)
+            }
+        }
+        // Atualiza o adapter com a lista filtrada.
+        roomAdapter.updateData(filteredRooms)
+    }
+
+    /**
+     * Retorna a lista completa de salas, já ordenada por número de inscritos.
+     */
     private fun getAllRooms(): List<Room> {
         return listOf(
             Room(1, "Direito Civil", "Discussões sobre direito civil, contratos e obrigações", "Civil", 1250),
@@ -54,8 +110,9 @@ class RoomListActivity : AppCompatActivity() {
         ).sortedByDescending { it.subscribersCount }
     }
 
+    // Permite que o botão "voltar" na toolbar funcione.
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 }

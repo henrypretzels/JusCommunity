@@ -35,6 +35,9 @@
 
     <!-- User Info -->
     <string name="user_name">Dr. João Silva</string>
+    
+    <!-- Search -->
+    <string name="no_results_found">Nenhuma sala encontrada para a pesquisa</string>
     <string name="user_points">1.250 pontos</string>
     <string name="user_level">Advogado Sênior</string>
     <string name="user_specialty">Direito Civil</string>
@@ -48,7 +51,7 @@
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Abrir menu de navegação</string>
     <string name="navigation_drawer_close">Fechar menu de navegação</string>
-    
+    <string name="or">Ou</string>
     <!-- General -->
     <string name="error_field_required">Este campo é obrigatório</string>
     <string name="error_invalid_email">Email inválido</string>
@@ -82,4 +85,6 @@
     <string name="ask_question">Fazer pergunta</string>
     <string name="no_questions">Nenhuma pergunta ainda</string>
     <string name="be_first_question">Seja o primeiro a fazer uma pergunta!</string>
+     <string name="search_rooms">Pesquisar uma sala</string>
+    <string name="discussion_rooms">Salas de Discussão</string>
 </resources>
