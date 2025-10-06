@@ -1,4 +1,4 @@
-package com.example.juscom
+package br.com.example.juscom
 
 import androidx.appcompat.app.AppCompatActivity
 

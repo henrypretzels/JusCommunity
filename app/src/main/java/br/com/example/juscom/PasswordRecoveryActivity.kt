@@ -1,9 +1,9 @@
-package com.example.juscom
+package br.com.example.juscom
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.juscom.databinding.ActivityPwrecoveryBinding
+import br.com.example.juscom.databinding.ActivityPwrecoveryBinding
 
 class PasswordRecoveryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPwrecoveryBinding

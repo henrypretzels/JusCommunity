@@ -1,10 +1,10 @@
-package com.example.juscom
+package br.com.example.juscom
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.juscom.databinding.ActivityQaBinding
+import br.com.example.juscom.databinding.ActivityQaBinding
 
 class QAActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQaBinding

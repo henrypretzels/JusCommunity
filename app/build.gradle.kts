@@ -1,14 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.juscom"
+    namespace = "br.com.example.juscom"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.juscom"
+        applicationId = "br.com.example.juscom"
         minSdk = 30
         targetSdk = 36
         versionCode = 1
@@ -46,6 +49,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    
+    // Firebase dependencies with specific versions
+    implementation("com.google.firebase:firebase-analytics:21.6.2")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.1")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

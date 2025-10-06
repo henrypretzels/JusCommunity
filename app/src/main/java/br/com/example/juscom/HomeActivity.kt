@@ -1,4 +1,4 @@
-package com.example.juscom
+package br.com.example.juscom
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.juscom.databinding.ActivityHomeBinding
+import br.com.example.juscom.databinding.ActivityHomeBinding
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

@@ -1,4 +1,4 @@
-package com.example.juscom
+package br.com.example.juscom
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

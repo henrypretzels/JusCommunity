@@ -1,10 +1,10 @@
-package com.example.juscom
+package br.com.example.juscom
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.juscom.databinding.ActivityRoomDetailBinding
+import br.com.example.juscom.databinding.ActivityRoomDetailBinding
 
 class RoomDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomDetailBinding
