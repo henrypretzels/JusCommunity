@@ -26,12 +26,14 @@ class RoomListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val rooms = getAllRooms()
-        roomAdapter = RoomAdapter(rooms) { room ->
+        val rooms = getAllRooms().toMutableList()
+        roomAdapter = RoomAdapter(rooms, { room ->
             val intent = Intent(this, RoomDetailActivity::class.java)
             intent.putExtra("room", room)
             startActivity(intent)
-        }
+        }, { isEmpty ->
+            // No action needed here for now
+        })
 
         binding.roomsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@RoomListActivity)

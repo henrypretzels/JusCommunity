@@ -11,6 +11,7 @@
     <string name="login_button">Entrar</string>
     <string name="create_account">Criar conta</string>
     <string name="forgot_password">Esqueci minha senha</string>
+    <string name="or">Ou</string>
     
     <!-- Register Screen -->
     <string name="register_title">Criar Nova Conta</string>
@@ -25,6 +26,13 @@
     <string name="home_description">Acesse as principais discussões jurídicas e conecte-se com a comunidade legal.</string>
     <string name="popular_rooms">Discussões em Destaque</string>
     <string name="view_all">Explorar Todas</string>
+    <string name="search_rooms_hint">Pesquisar salas pelo nome...</string>
+    <string name="no_results">Nenhum resultado encontrado.</string>
+
+    <!-- Strings para a Seção de Materiais de Estudo -->
+    <string name="study_materials_title">Materiais de Estudo</string>
+    <string name="study_materials_description">Acesse resumos, artigos e outros materiais compartilhados pela comunidade.</string>
+    <string name="view_materials_button">Ver Materiais</string>
     
     <!-- User Info -->
     <string name="user_name">Dr. João Silva</string>
@@ -75,4 +83,9 @@
     <string name="ask_question">Fazer pergunta</string>
     <string name="no_questions">Nenhuma pergunta ainda</string>
     <string name="be_first_question">Seja o primeiro a fazer uma pergunta!</string>
+
+    <!-- Search -->
+    <string name="no_results_found">Nenhuma sala encontrada para a pesquisa</string>
+    <string name="search_rooms">Pesquisar uma sala</string>
+    <string name="discussion_rooms">Salas de Discussão</string>
 </resources>

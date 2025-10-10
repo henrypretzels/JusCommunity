@@ -49,7 +49,7 @@
             app:strokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -193,7 +193,7 @@
             android:lineSpacingExtra="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userHeaderCard" />
+            app:layout_constraintTop_toBottomOf="@id/userHeaderCard" />
 
         <!-- Fixed Header Section -->
         <LinearLayout
@@ -206,7 +206,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView">
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView">
 
             <TextView
                 android:layout_width="0dp"
@@ -229,6 +229,24 @@
 
         </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/search_rooms_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerSection">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <!-- Scrollable Content Area -->
         <ScrollView
             android:layout_width="match_parent"
@@ -237,15 +255,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerSection">
+            app:layout_constraintTop_toBottomOf="@id/search_input_layout">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/roomsRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp" />
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/roomsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/noResultsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/no_results"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+            </LinearLayout>
 
         </ScrollView>
 

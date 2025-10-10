@@ -2,10 +2,13 @@ package br.com.example.juscom
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -30,6 +33,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupDrawer()
         setupUserInfo()
         setupRecyclerView()
+        setupSearch()
         setupClickListeners()
         setupOnBackPressed()
     }
@@ -64,17 +68,31 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     
     private fun setupRecyclerView() {
-        val rooms = getSampleRooms()
-        roomAdapter = RoomAdapter(rooms) { room ->
+        val allRooms = getSampleRooms()
+        roomAdapter = RoomAdapter(allRooms.toMutableList(), { room ->
             val intent = Intent(this, RoomDetailActivity::class.java)
             intent.putExtra("room", room)
             startActivity(intent)
-        }
+        }, { isEmpty ->
+            binding.noResultsText.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        })
         
         binding.roomsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeActivity)
             adapter = roomAdapter
         }
+    }
+
+    private fun setupSearch() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                roomAdapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
     
     private fun getSampleRooms(): List<Room> {
@@ -84,7 +102,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Room(3, "Direito Trabalhista", "Temas de direito do trabalho e previdenciário", "Trabalhista", 750),
             Room(4, "Direito Tributário", "Discussões sobre direito tributário e fiscal", "Tributário", 650),
             Room(5, "Direito Constitucional", "Debates sobre direito constitucional", "Constitucional", 890),
-            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720)
+            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720),
+            Room(7, "Direito Empresarial", "Discussões sobre direito empresarial e societário", "Empresarial", 580),
+            Room(8, "Direito Ambiental", "Temas de direito ambiental e sustentabilidade", "Ambiental", 420),
+            Room(9, "Direito da Família", "Debates sobre direito de família e sucessões", "Família", 680),
+            Room(10, "Direito do Consumidor", "Discussões sobre direito do consumidor", "Consumidor", 540)
         ).sortedByDescending { it.subscribersCount }
     }
     
