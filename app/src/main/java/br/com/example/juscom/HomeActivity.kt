@@ -118,12 +118,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // Close the drawer before navigating
             drawerLayout.closeDrawer(GravityCompat.START)
             // Show a toast or navigate to the profile activity
-            Toast.makeText(this, R.string.opening_profile, Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
         
         // Listener for user header card
         binding.userHeaderCard.setOnClickListener {
-            Toast.makeText(this, "Abrindo perfil do usuário", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.studyMaterialButton.setOnClickListener {
+            val intent = Intent(this, StudyMaterialActivity::class.java)
+            startActivity(intent)
         }
         
         // Listener for "Ver todas as salas" button
@@ -136,13 +143,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_profile -> {
-                Toast.makeText(this, "Perfil selecionado", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_settings -> {
-                Toast.makeText(this, "Configurações selecionadas", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_help -> {
-                Toast.makeText(this, "Ajuda selecionada", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, HelpActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_logout -> {
                 FirebaseAuth.getInstance().signOut()

@@ -2,14 +2,14 @@ package br.com.example.juscom
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import br.com.example.juscom.databinding.ActivityProfileBinding
+import br.com.example.juscom.databinding.ActivityHelpBinding
 
-class ProfileActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityProfileBinding
+class HelpActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHelpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityHelpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
