@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="32dp">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -28,6 +29,7 @@
 
         <ImageView
             android:id="@+id/profile_image"
+            android:contentDescription="Foto de Perfil do usuário"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="24dp"
@@ -36,30 +38,128 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
-        <TextView
-            android:id="@+id/profile_name"
-            android:layout_width="wrap_content"
+        <!-- Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_name_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="@string/user_name"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginEnd="24dp"
+            android:hint="Nome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_image" />
+            app:layout_constraintTop_toBottomOf="@id/profile_image">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Nome do Usuário" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Level -->
         <TextView
             android:id="@+id/profile_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/user_level"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_name" />
+            app:layout_constraintTop_toBottomOf="@id/profile_name_layout"
+            tools:text="Nível 5 - Mestre do Direito" />
 
-        <!-- Add more profile details here -->
+        <!-- Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_email_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:hint="Email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_level">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="usuario@email.com" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Institution -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_institution_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:hint="Instituição de Ensino"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_email_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_institution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="Universidade Regional Integrada" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Federal Unit -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_FedUnit_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:hint="Estado (UF)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_institution_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_FedUnit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="Rio Grande do Sul" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Edit Button -->
+        <Button
+            android:id="@+id/button_EditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Editar Perfil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_FedUnit_layout" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/button_SaveChanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Salvar Alterações"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_FedUnit_layout"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

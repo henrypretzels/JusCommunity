@@ -48,6 +48,26 @@
             android:checked="true"
             android:textSize="18sp"/>
 
+        <Button
+            android:id="@+id/button_change_password"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Alterar Senha"
+            android:gravity="start|center_vertical"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/button_delete_account"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Apagar Conta"
+            android:textColor="?attr/colorError"
+            android:gravity="start|center_vertical"
+            android:textSize="18sp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
