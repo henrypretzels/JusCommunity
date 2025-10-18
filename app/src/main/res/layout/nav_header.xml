@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:background="@color/primary_blue"
@@ -16,21 +17,25 @@
         android:src="@drawable/image"
         android:contentDescription="@string/app_name" />
 
+    <!-- This TextView now has the ID expected by HomeActivity -->
     <TextView
+        android:id="@+id/userNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="Nome do Usuário" />
 
+    <!-- This is the new TextView for the email -->
     <TextView
+        android:id="@+id/userEmailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Comunidade Jurídica"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:alpha="0.8" />
+        android:alpha="0.8"
+        tools:text="usuario@email.com" />
 
 </LinearLayout>

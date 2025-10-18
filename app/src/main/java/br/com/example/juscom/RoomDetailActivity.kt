@@ -31,7 +31,8 @@ class RoomDetailActivity : AppCompatActivity() {
     }
 
     private fun setupRoomInfo() {
-        binding.roomImage.setImageResource(room.imageResource)
+        // The following line was removed as imageResource no longer exists in the Room data class.
+        // binding.roomImage.setImageResource(room.imageResource)
         binding.roomName.text = room.name
         binding.roomDescription.text = room.description
         binding.roomCategory.text = room.category

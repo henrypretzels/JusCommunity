@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -17,33 +18,49 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.example.juscom.databinding.ActivityHomeBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var roomAdapter: RoomAdapter
-    
+
+    // Firebase instances
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private var currentUser: FirebaseUser? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
+        // Initialize Firebase
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        currentUser = auth.currentUser
+
         setupToolbar()
         setupDrawer()
-        setupUserInfo()
         setupRecyclerView()
         setupSearch()
         setupClickListeners()
         setupOnBackPressed()
+
+        // Load dynamic data
+        loadUserInfo()
+        loadRooms()
     }
-    
+
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = getString(R.string.home_title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-    
+
     private fun setupDrawer() {
         drawerLayout = binding.drawerLayout
         toggle = ActionBarDrawerToggle(
@@ -52,35 +69,62 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        
+
         binding.navigationView.setNavigationItemSelectedListener(this)
     }
-    
-    private fun setupUserInfo() {
-        // Configurar informações do usuário (dados fake por enquanto)
-        binding.userNameTextView.text = getString(R.string.user_name)
-        binding.userPointsTextView.text = getString(R.string.user_points)
-        binding.userLevelTextView.text = getString(R.string.user_level)
-        binding.userOabTextView.text = getString(R.string.user_oab)
-        
-        // Configurar avatar do usuário
-        binding.userAvatarImageView.setImageResource(R.drawable.scales)
+
+    private fun loadUserInfo() {
+        val uid = currentUser?.uid
+        if (uid != null) {
+            firestore.collection("users").document(uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        binding.userNameTextView.text = document.getString("name")
+                        binding.userOabTextView.text = document.getString("uf") // Assuming UF for OAB placeholder
+
+                        val level = document.getLong("level") ?: 1
+                        val points = document.getLong("points") ?: 0
+                        binding.userLevelTextView.text = "Nível $level"
+                        binding.userPointsTextView.text = "$points XP"
+
+                        // Also update the navigation drawer header if needed
+                        val headerView = binding.navigationView.getHeaderView(0)
+                        val navUserName = headerView.findViewById<TextView>(R.id.userNameTextView)
+                        val navUserEmail = headerView.findViewById<TextView>(R.id.userEmailTextView)
+                        navUserName.text = document.getString("name")
+                        navUserEmail.text = document.getString("email")
+                    }
+                }
+        }
     }
-    
+
     private fun setupRecyclerView() {
-        val allRooms = getSampleRooms()
-        roomAdapter = RoomAdapter(allRooms.toMutableList(), { room ->
+        // Initialize with an empty list. It will be populated from Firestore.
+        roomAdapter = RoomAdapter(mutableListOf(), { room ->
             val intent = Intent(this, RoomDetailActivity::class.java)
             intent.putExtra("room", room)
             startActivity(intent)
         }, { isEmpty ->
             binding.noResultsText.visibility = if (isEmpty) View.VISIBLE else View.GONE
         })
-        
+
         binding.roomsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeActivity)
             adapter = roomAdapter
         }
+    }
+
+    private fun loadRooms() {
+        firestore.collection("rooms")
+            .orderBy("subscribersCount", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                val rooms = result.toObjects(Room::class.java)
+                roomAdapter.updateRooms(rooms)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Falha ao carregar salas: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun setupSearch() {
@@ -94,35 +138,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun afterTextChanged(s: Editable?) {}
         })
     }
-    
-    private fun getSampleRooms(): List<Room> {
-        return listOf(
-            Room(1, "Direito Civil", "Discussões sobre direito civil, contratos e obrigações", "Civil", 1250),
-            Room(2, "Direito Penal", "Debates sobre direito penal e processo penal", "Penal", 980),
-            Room(3, "Direito Trabalhista", "Temas de direito do trabalho e previdenciário", "Trabalhista", 750),
-            Room(4, "Direito Tributário", "Discussões sobre direito tributário e fiscal", "Tributário", 650),
-            Room(5, "Direito Constitucional", "Debates sobre direito constitucional", "Constitucional", 890),
-            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720),
-            Room(7, "Direito Empresarial", "Discussões sobre direito empresarial e societário", "Empresarial", 580),
-            Room(8, "Direito Ambiental", "Temas de direito ambiental e sustentabilidade", "Ambiental", 420),
-            Room(9, "Direito da Família", "Debates sobre direito de família e sucessões", "Família", 680),
-            Room(10, "Direito do Consumidor", "Discussões sobre direito do consumidor", "Consumidor", 540)
-        ).sortedByDescending { it.subscribersCount }
-    }
-    
+
     private fun setupClickListeners() {
-        // Listener for the profile image in the navigation header
         val headerView = binding.navigationView.getHeaderView(0)
         val profileImageView = headerView.findViewById<ImageView>(R.id.logoImageView)
         profileImageView.setOnClickListener {
-            // Close the drawer before navigating
             drawerLayout.closeDrawer(GravityCompat.START)
-            // Show a toast or navigate to the profile activity
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
-        
-        // Listener for user header card
+
         binding.userHeaderCard.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
@@ -132,14 +157,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(this, StudyMaterialActivity::class.java)
             startActivity(intent)
         }
-        
-        // Listener for "Ver todas as salas" button
+
         binding.viewAllRoomsButton.setOnClickListener {
             val intent = Intent(this, RoomListActivity::class.java)
             startActivity(intent)
         }
     }
-    
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_profile -> {
@@ -155,25 +179,24 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_logout -> {
-                FirebaseAuth.getInstance().signOut()
+                auth.signOut()
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
             }
         }
-        
+
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-    
+
     private fun setupOnBackPressed() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
-                    // Disable this callback and call the default back pressed behavior
                     isEnabled = false
                     onBackPressedDispatcher.onBackPressed()
                 }

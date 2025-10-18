@@ -2,21 +2,29 @@ package br.com.example.juscom
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.example.juscom.databinding.ActivityRoomListBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class RoomListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomListBinding
     private lateinit var roomAdapter: RoomAdapter
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoomListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        firestore = FirebaseFirestore.getInstance()
+
         setupToolbar()
         setupRecyclerView()
+        loadAllRooms()
     }
 
     private fun setupToolbar() {
@@ -26,13 +34,14 @@ class RoomListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val rooms = getAllRooms().toMutableList()
-        roomAdapter = RoomAdapter(rooms, { room ->
+        // Initialize the adapter with an empty list
+        roomAdapter = RoomAdapter(mutableListOf(), { room ->
             val intent = Intent(this, RoomDetailActivity::class.java)
             intent.putExtra("room", room)
             startActivity(intent)
         }, { isEmpty ->
-            // No action needed here for now
+            // This can be used to show a 'no rooms found' message if needed
+            binding.emptyView.visibility = if (isEmpty) View.VISIBLE else View.GONE
         })
 
         binding.roomsRecyclerView.apply {
@@ -41,19 +50,18 @@ class RoomListActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAllRooms(): List<Room> {
-        return listOf(
-            Room(1, "Direito Civil", "Discussões sobre direito civil, contratos e obrigações", "Civil", 1250),
-            Room(2, "Direito Penal", "Debates sobre direito penal e processo penal", "Penal", 980),
-            Room(3, "Direito Trabalhista", "Temas de direito do trabalho e previdenciário", "Trabalhista", 750),
-            Room(4, "Direito Tributário", "Discussões sobre direito tributário e fiscal", "Tributário", 650),
-            Room(5, "Direito Constitucional", "Debates sobre direito constitucional", "Constitucional", 890),
-            Room(6, "Direito Administrativo", "Temas de direito administrativo", "Administrativo", 720),
-            Room(7, "Direito Empresarial", "Discussões sobre direito empresarial e societário", "Empresarial", 580),
-            Room(8, "Direito Ambiental", "Temas de direito ambiental e sustentabilidade", "Ambiental", 420),
-            Room(9, "Direito da Família", "Debates sobre direito de família e sucessões", "Família", 680),
-            Room(10, "Direito do Consumidor", "Discussões sobre direito do consumidor", "Consumidor", 540)
-        ).sortedByDescending { it.subscribersCount }
+    private fun loadAllRooms() {
+        // Fetch all rooms from Firestore, ordered by name
+        firestore.collection("rooms")
+            .orderBy("name", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                val rooms = result.toObjects(Room::class.java)
+                roomAdapter.updateRooms(rooms)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Falha ao carregar salas: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {
