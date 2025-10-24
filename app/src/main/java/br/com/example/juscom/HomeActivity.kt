@@ -117,6 +117,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun loadRooms() {
         firestore.collection("rooms")
             .orderBy("subscribersCount", Query.Direction.DESCENDING)
+            .limit(5)
             .get()
             .addOnSuccessListener { result ->
                 val rooms = result.toObjects(Room::class.java)
