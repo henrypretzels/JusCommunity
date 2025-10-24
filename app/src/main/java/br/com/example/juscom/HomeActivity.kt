@@ -52,6 +52,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Load dynamic data
         loadUserInfo()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadRooms()
     }
 
@@ -161,6 +165,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.viewAllRoomsButton.setOnClickListener {
             val intent = Intent(this, RoomListActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.fabCreateRoom.setOnClickListener {
+            val intent = Intent(this, CreateRoomActivity::class.java)
             startActivity(intent)
         }
     }

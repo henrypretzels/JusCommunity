@@ -59,7 +59,6 @@
 
     <string name="room_list_title">Todas as Salas</string>
     <string name="subscribers_count">%d inscritos</string>
-    <string name="room_category">%s</string>
 
     <string name="room_detail_title">Detalhes da Sala</string>
     <string name="subscribe_button">Inscrever-se</string>
@@ -80,4 +79,9 @@
 
     <string name="dark_mode">Modo Escuro</string>
     <string name="enable_notifications">Ativar Notificações</string>
+
+    <string name="create_room">Criar Sala</string>
+    <string name="room_name">Nome da Sala</string>
+    <string name="room_description">Descrição</string>
+    <string name="room_category">Categoria</string>
 </resources>

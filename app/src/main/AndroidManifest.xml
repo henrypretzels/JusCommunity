@@ -33,6 +33,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".HelpActivity" />
         <activity android:name=".StudyMaterialActivity" />
+        <activity android:name=".CreateRoomActivity" />
     </application>
 
 </manifest>
