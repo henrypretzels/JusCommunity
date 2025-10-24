@@ -1,5 +1,6 @@
 package br.com.example.juscom
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -25,14 +26,14 @@ class QuestionListActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
+        setupClickListeners()
         observeViewModel()
+    }
 
-        roomId?.let {
-            viewModel.loadQuestions(it)
-        } ?: run {
-            Toast.makeText(this, "Error: Room ID is missing.", Toast.LENGTH_LONG).show()
-            finish()
-        }
+    override fun onResume() {
+        super.onResume()
+        // Refresh the questions list when returning to the activity
+        roomId?.let { viewModel.loadQuestions(it) }
     }
 
     private fun setupToolbar() {
@@ -50,6 +51,14 @@ class QuestionListActivity : AppCompatActivity() {
         binding.questionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@QuestionListActivity)
             adapter = questionAdapter
+        }
+    }
+
+    private fun setupClickListeners() {
+        binding.fabAskQuestion.setOnClickListener {
+            val intent = Intent(this, CreateQuestionActivity::class.java)
+            intent.putExtra("ROOM_ID", roomId)
+            startActivity(intent)
         }
     }
 

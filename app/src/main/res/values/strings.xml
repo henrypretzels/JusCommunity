@@ -84,4 +84,8 @@
     <string name="room_name">Nome da Sala</string>
     <string name="room_description">Descrição</string>
     <string name="room_category">Categoria</string>
+
+    <string name="question_title">Título da Pergunta</string>
+    <string name="question_body">Descreva sua pergunta em detalhes</string>
+    <string name="submit_question">Enviar Pergunta</string>
 </resources>
