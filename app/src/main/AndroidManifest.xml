@@ -28,7 +28,7 @@
         <activity android:name=".PasswordRecoveryActivity" />
         <activity android:name=".RoomListActivity" />
         <activity android:name=".RoomDetailActivity" />
-        <activity android:name=".QAActivity" />
+        <activity android:name=".QuestionListActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".HelpActivity" />

@@ -15,14 +15,3 @@ data class Room(
     val subscribersCount: Int = 0,
     var isSubscribed: Boolean = false // This will be handled locally, not in Firestore
 ) : Serializable
-
-
-// No changes needed for the Question data class at this time
-data class Question(
-    val id: Int,
-    val question: String,
-    val answer: String,
-    val author: String,
-    val date: String,
-    val likes: Int = 0
-) : Serializable

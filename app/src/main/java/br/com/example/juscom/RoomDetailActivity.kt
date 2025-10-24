@@ -31,8 +31,6 @@ class RoomDetailActivity : AppCompatActivity() {
     }
 
     private fun setupRoomInfo() {
-        // The following line was removed as imageResource no longer exists in the Room data class.
-        // binding.roomImage.setImageResource(room.imageResource)
         binding.roomName.text = room.name
         binding.roomDescription.text = room.description
         binding.roomCategory.text = room.category
@@ -47,8 +45,8 @@ class RoomDetailActivity : AppCompatActivity() {
         }
 
         binding.viewQaButton.setOnClickListener {
-            val intent = Intent(this, QAActivity::class.java)
-            intent.putExtra("room", room)
+            val intent = Intent(this, QuestionListActivity::class.java)
+            intent.putExtra("ROOM_ID", room.id)
             startActivity(intent)
         }
     }
