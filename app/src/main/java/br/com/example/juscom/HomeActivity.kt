@@ -10,17 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.example.juscom.databinding.ActivityHomeBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityHomeBinding
@@ -28,20 +27,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var roomAdapter: RoomAdapter
 
-    // Firebase instances
+    private val viewModel: HomeViewModel by viewModels()
     private lateinit var auth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
-    private var currentUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-        currentUser = auth.currentUser
 
         setupToolbar()
         setupDrawer()
@@ -49,14 +43,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupSearch()
         setupClickListeners()
         setupOnBackPressed()
-
-        // Load dynamic data
-        loadUserInfo()
+        observeViewModel()
     }
 
     override fun onResume() {
         super.onResume()
-        loadRooms()
+        viewModel.loadRooms()
     }
 
     private fun setupToolbar() {
@@ -77,33 +69,35 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navigationView.setNavigationItemSelectedListener(this)
     }
 
-    private fun loadUserInfo() {
-        val uid = currentUser?.uid
-        if (uid != null) {
-            firestore.collection("users").document(uid).get()
-                .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
-                        binding.userNameTextView.text = document.getString("name")
-                        binding.userOabTextView.text = document.getString("uf") // Assuming UF for OAB placeholder
+    private fun observeViewModel() {
+        viewModel.user.observe(this, Observer { user ->
+            user?.let { updateUserInfo(it) }
+        })
 
-                        val level = document.getLong("level") ?: 1
-                        val points = document.getLong("points") ?: 0
-                        binding.userLevelTextView.text = "Nível $level"
-                        binding.userPointsTextView.text = "$points XP"
+        viewModel.rooms.observe(this, Observer { rooms ->
+            roomAdapter.updateRooms(rooms)
+        })
 
-                        // Also update the navigation drawer header if needed
-                        val headerView = binding.navigationView.getHeaderView(0)
-                        val navUserName = headerView.findViewById<TextView>(R.id.userNameTextView)
-                        val navUserEmail = headerView.findViewById<TextView>(R.id.userEmailTextView)
-                        navUserName.text = document.getString("name")
-                        navUserEmail.text = document.getString("email")
-                    }
-                }
-        }
+        viewModel.error.observe(this, Observer { error ->
+            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    private fun updateUserInfo(user: User) {
+        binding.userNameTextView.text = user.name
+        binding.userOabTextView.text = user.uf
+        binding.userLevelTextView.text = "Nível ${user.level}"
+        binding.userPointsTextView.text = "${user.points} XP"
+
+        // Also update the navigation drawer header
+        val headerView = binding.navigationView.getHeaderView(0)
+        val navUserName = headerView.findViewById<TextView>(R.id.userNameTextView)
+        val navUserEmail = headerView.findViewById<TextView>(R.id.userEmailTextView)
+        navUserName.text = user.name
+        navUserEmail.text = user.email
     }
 
     private fun setupRecyclerView() {
-        // Initialize with an empty list. It will be populated from Firestore.
         roomAdapter = RoomAdapter(mutableListOf(), { room ->
             val intent = Intent(this, RoomDetailActivity::class.java)
             intent.putExtra("room", room)
@@ -116,20 +110,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             layoutManager = LinearLayoutManager(this@HomeActivity)
             adapter = roomAdapter
         }
-    }
-
-    private fun loadRooms() {
-        firestore.collection("rooms")
-            .orderBy("subscribersCount", Query.Direction.DESCENDING)
-            .limit(5)
-            .get()
-            .addOnSuccessListener { result ->
-                val rooms = result.toObjects(Room::class.java)
-                roomAdapter.updateRooms(rooms)
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Falha ao carregar salas: ${exception.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     private fun setupSearch() {
