@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="8dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/divider_color">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/answerBodyTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Esta é a resposta para a pergunta. Dano material é o prejuízo econômico direto, enquanto o dano moral afeta os direitos da personalidade como honra e imagem." />
+
+        <TextView
+            android:id="@+id/authorNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/answerBodyTextView"
+            tools:text="por Dra. Maria Santos" />
+
+        <ImageButton
+            android:id="@+id/upvoteButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_up"
+            app:layout_constraintEnd_toStartOf="@+id/voteCountTextView"
+            app:layout_constraintTop_toTopOf="@+id/authorNameTextView"
+            app:layout_constraintBottom_toBottomOf="@+id/authorNameTextView"/>
+
+        <TextView
+            android:id="@+id/voteCountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/downvoteButton"
+            app:layout_constraintTop_toTopOf="@+id/upvoteButton"
+            app:layout_constraintBottom_toBottomOf="@+id/upvoteButton"
+            android:minWidth="30dp"
+            android:gravity="center"
+            tools:text="15" />
+
+        <ImageButton
+            android:id="@+id/downvoteButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_down"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/upvoteButton"
+            app:layout_constraintBottom_toBottomOf="@+id/upvoteButton"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

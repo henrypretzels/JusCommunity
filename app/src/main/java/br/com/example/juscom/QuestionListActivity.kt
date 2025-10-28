@@ -44,8 +44,9 @@ class QuestionListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         questionAdapter = QuestionListAdapter(emptyList()) { question ->
-            // TODO: Navigate to QuestionDetailActivity in a future phase
-            Toast.makeText(this, "Clicked on: ${question.title}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, QuestionDetailActivity::class.java)
+            intent.putExtra("QUESTION_ID", question.id)
+            startActivity(intent)
         }
 
         binding.questionsRecyclerView.apply {

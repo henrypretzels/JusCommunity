@@ -88,4 +88,7 @@
     <string name="question_title">Título da Pergunta</string>
     <string name="question_body">Descreva sua pergunta em detalhes</string>
     <string name="submit_question">Enviar Pergunta</string>
+
+    <string name="question_detail_title">Detalhes da Pergunta</string>
+    <string name="answers_header">Respostas</string>
 </resources>

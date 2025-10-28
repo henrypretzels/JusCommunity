@@ -1,63 +1,121 @@
-# JusCom Project Analysis & Next Steps
+# Análise do Projeto JusCom e Próximos Passos
 
-This document summarizes the development work performed, the methodology used, and the recommended next steps for the JusCom project.
-
----
-
-## What Was Done
-
-The primary achievement was the migration of the application from a static, prototype state to a dynamic, data-driven application connected to a Firebase backend.
-
-1.  **Backend Setup & Connection:**
-    *   Established a clear data schema for **Cloud Firestore**.
-    *   Created collections for `users`, `rooms`, and `help_items`.
-    *   Confirmed the project is connected to Firebase and has the required dependencies (Auth & Firestore).
-
-2.  **Full User Lifecycle Implementation:**
-    *   **Registration (`RegisterActivity`):** The registration screen was refactored to not only create a user in **Firebase Auth** but to also simultaneously create a corresponding user profile document in the `users` collection in **Firestore**. This fixed the critical "Profile not found" bug.
-    *   **Profile (`ProfileActivity`):** The profile screen now dynamically fetches the logged-in user's data from Firestore and displays it. A view/edit mode was implemented to allow users to update their information, which is then saved back to Firestore.
-
-3.  **Dynamic Content Implementation:**
-    *   **Home Screen (`HomeActivity`):** The previously static user header and rooms list are now dynamic. The activity fetches the current user's data and the list of discussion rooms directly from Firestore.
-    *   **All Rooms Screen (`RoomListActivity`):** This screen was refactored to fetch and display the complete list of rooms from Firestore, replacing the hardcoded data.
-    *   **Data Models (`Room.kt`):** The `Room` data class was refactored to be compatible with Firestore's automatic data serialization, which was a critical step to prevent crashes.
-
-4.  **UI & Layout Refactoring:**
-    *   The layouts for `activity_profile.xml`, `activity_register.xml`, `activity_help.xml`, and `nav_header.xml` were all updated and refactored to align with the dynamic data and new feature requirements.
-
-5.  **Systematic Debugging:**
-    *   Incrementally identified and fixed numerous build errors (`Unresolved reference`, `Argument type mismatch`) that arose from the extensive refactoring, ensuring the project remains in a buildable state.
+Este documento resume o trabalho de desenvolvimento realizado, a metodologia utilizada e os próximos passos recomendados para o projeto JusCom.
 
 ---
 
-## How It Was Done
+## O Que Foi Feito (Até 24 de Outubro)
 
-We followed a methodical and safe development process:
-
-*   **Incremental Progress:** Instead of attempting a full-scale refactor at once, features were implemented one piece at a time.
-*   **Checkpoint Commits:** You wisely created commits at each successful milestone, providing a safety net and preserving progress.
-*   **Form Before Function:** We first defined the UI layouts and data models based on your sketches and requirements before implementing the backend logic.
-*   **Targeted Refactoring:** We refactored specific Activities and Adapters one by one to connect them to the Firestore backend.
+*   **Fundação e Backend:** Migração bem-sucedida de um protótipo estático para um aplicativo dinâmico, totalmente conectado ao Firebase (Auth e Firestore).
+*   **Ciclo de Vida do Usuário:** Implementação completa do fluxo de registro, login, recuperação de senha e perfil de usuário dinâmico.
+*   **Conteúdo Dinâmico:** As telas `Home`, `RoomList`, `Help` e `Settings` foram refatoradas para carregar dados diretamente do Firestore, eliminando conteúdo estático.
+*   **Funcionalidades Essenciais:**
+    *   Os usuários podem criar novas salas de discussão (`CreateRoomActivity`).
+    *   O sistema de Q&A (Perguntas e Respostas) foi iniciado, com a capacidade de listar e visualizar perguntas de uma sala (`QuestionListActivity` e `QuestionDetailActivity`).
+    *   Os usuários podem postar novas perguntas em uma sala (`CreateQuestionActivity`).
+*   **Melhoria Arquitetural (MVVM):** A `HomeActivity` foi refatorada para usar o padrão MVVM, separando a lógica de UI da lógica de dados, resultando em um código mais limpo e robusto.
 
 ---
 
-## What Needs to Be Done Next
+## Plano de Ação (Próximas 3 Semanas)
 
-Based on your latest observations and our original plan, here are the recommended next steps:
+### **Semana 1: Conclusão do Q&A e Refatoração (24 de Outubro - 30 de Outubro)**
 
-1.  **Address UI/UX Issues:**
-    *   **Home Screen Header:** Remove the static "15 anos de experiência" text from the user card in `activity_home.xml`.
-    *   **Search Bar:** Fix the layout in `activity_home.xml` to prevent the search bar from clipping other elements and restore its filtering functionality.
-    *   **Featured Rooms:** The `HomeActivity` currently loads all rooms but doesn't display a subset of them in the main view. Modify it to show a few featured/popular rooms in the `RecyclerView`, with the "Explorar Todas" button leading to the `RoomListActivity`.
+**Meta:** Finalizar o ciclo completo de interação no fórum e continuar a melhoria da arquitetura do código.
 
-2.  **Implement Core Logic:**
-    *   **Settings (`SettingsActivity`):** Implement the logic for the UI elements we added: theme switching, password changes, and the account deletion flow.
-    *   **Help (`HelpActivity`):** Implement the click listeners to make the question cards expandable. Fetch the questions and answers dynamically from the `help_items` collection in Firestore.
+1.  **Implementar Votação nas Respostas (Phase 4 do Q&A):**
+    *   **Tarefa:** Implementar a lógica de `Transaction` no `QuestionDetailViewModel` para garantir que o `voteCount` em uma resposta seja atualizado atomicamente.
+    *   **Lógica:** Criar ou atualizar o documento na subcoleção `votes` e, na mesma operação, incrementar/decrementar o contador no documento da resposta.
+    *   **Feedback Visual:** Atualizar a UI para refletir o novo `voteCount` e, opcionalmente, destacar os botões de voto para indicar a escolha do usuário.
 
-3.  **Add Core Features:**
-    *   **Create Room:** Add a `FloatingActionButton` or menu item to allow users to create new discussion rooms from within the app.
+2.  **Implementar o Envio de Respostas (Phase 4 do Q&A):**
+    *   **Tarefa:** Adicionar um campo de texto e um botão "Enviar" na `QuestionDetailActivity`.
+    *   **Lógica:** Criar a função no `ViewModel` para salvar um novo documento na coleção `answers`, associado ao `questionId`.
+    *   **Atualização:** Fazer com que a lista de respostas seja atualizada automaticamente após o envio.
 
-4.  **Architectural Improvements (MVVM):**
-    *   Introduce `ViewModel`s for `HomeActivity`, `ProfileActivity`, etc., to separate UI logic from data-sourcing logic. This will make the code cleaner, more testable, and more robust against configuration changes.
+3.  **Refatorar `ProfileActivity` para MVVM:**
+    *   **Tarefa:** Aplicar o mesmo padrão de refatoração da `HomeActivity`.
+    *   **Ações:** Criar um `ProfileViewModel` para gerenciar a busca e a atualização dos dados do perfil do usuário, limpando a `ProfileActivity`.
 
-This document should serve as a great starting point for when you resume work on the project. It has been a pleasure assisting you!
+### **Semana 2: Material de Estudo e UI/UX (31 de Outubro - 6 de Novembro)**
+
+**Meta:** Implementar a seção de compartilhamento de materiais e refinar a experiência do usuário em todo o aplicativo.
+
+1.  **Implementar `StudyMaterialActivity`:**
+    *   **Definir Schema:** Criar uma nova coleção `study_materials` no Firestore. Documentos podem conter campos como `title`, `description`, `authorName`, `category` e `fileUrl` (para um link do Firebase Storage).
+    *   **Lógica de Upload (MVP):** Inicialmente, podemos assumir que os arquivos PDF/DOCX são adicionados manualmente ao Firebase Storage e o link é colado no Firestore. A lógica de upload pelo app pode ser uma `Feature V2`.
+    *   **Desenvolvimento da Tela:** Criar um `StudyMaterialViewModel` e refatorar a `StudyMaterialActivity` para listar os materiais usando um `RecyclerView`. Cada item deve permitir a abertura do link (`fileUrl`).
+
+2.  **Refinar a Busca da Home:**
+    *   **Tarefa:** Atualmente, o filtro de busca só funciona no `RoomListActivity`. Vamos fazê-lo funcionar na `HomeActivity` para a lista de salas em destaque.
+    *   **Lógica:** A lógica de filtro no `RoomAdapter` já existe; precisamos apenas garantir que o `EditText` da `HomeActivity` esteja corretamente vinculado a ele.
+
+3.  **Ajustes de UI/UX:**
+    *   **Ícones e Cores:** Revisar a consistência de ícones, cores e espaçamentos em todas as telas implementadas.
+    *   **Feedback de Carregamento:** Adicionar `ProgressBar`s em telas que carregam dados do Firestore (como `QuestionListActivity` e `QuestionDetailActivity`) para melhorar o feedback ao usuário.
+
+### **Semana 3: Finalização e Testes (7 de Novembro - 13 de Novembro)**
+
+**Meta:** Garantir que todas as funcionalidades estejam estáveis, a base de código limpa e o aplicativo pronto para um ciclo de feedback.
+
+1.  **Refatorar `RoomListActivity` e `SettingsActivity` para MVVM:**
+    *   **Tarefa:** Completar a migração para a arquitetura MVVM, aplicando o padrão às últimas Activities que ainda misturam lógica de UI e dados.
+    *   **Ações:** Criar `RoomListViewModel` e `SettingsViewModel` e mover as chamadas ao Firestore para dentro deles.
+
+2.  **Testes de Regressão e Fluxo Completo:**
+    *   **Tarefa:** Realizar um teste completo de todos os fluxos de usuário implementados:
+        *   Registro -> Login -> Logout.
+        *   Navegar para uma sala -> Visualizar perguntas -> Criar uma pergunta.
+        *   Visualizar uma pergunta -> Responder -> Votar em uma resposta.
+        *   Editar perfil -> Trocar tema.
+        *   Excluir conta.
+
+3.  **Limpeza de Código:**
+    *   **Tarefa:** Remover quaisquer arquivos obsoletos que possam ter sido esquecidos (como `QAActivity`, `QAAdapter`, etc., se ainda existirem).
+    *   **Revisão:** Garantir que todos os `TODOs` deixados no código tenham sido resolvidos ou documentados como trabalho futuro.
+
+---
+
+Este plano de ação fornece um roteiro claro e incremental para as próximas semanas, focando em entregar valor a cada etapa e mantendo a alta qualidade da base de código.
+
+Important note:
+The project has these Firestore Database collections and subcollections:
+
+answers- Main Collection. Fields:
+
+authorId: string
+authorName: string
+body: string
+questionId: string
+timestamp: timestamp
+voteCount: number
+
+votes- Subcollection of Answers. Fields:
+
+votetype: string (permanent "up" value)
+
+help_items- Main Collection. Fields:
+answer: string
+order: number
+question: string
+
+questions- Main Collection. Fields:
+answerCount: number
+authorId: string
+authorName: string
+body: string
+roomId: string
+timestamp: timestamp
+title: string
+rooms- Main Collection. Fields:
+category: string
+description: string
+name: string
+subscribersCount: number
+users- Main Collection. Fields:
+email: string
+institution: string
+level: number
+name: string
+points: number
+uf (Unidade Federativa): string
