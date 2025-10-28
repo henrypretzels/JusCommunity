@@ -127,28 +127,28 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupClickListeners() {
         val headerView = binding.navigationView.getHeaderView(0)
         val profileImageView = headerView.findViewById<ImageView>(R.id.logoImageView)
-        profileImageView.setOnClickListener {
+        profileImageView.setOnClickListener { 
             drawerLayout.closeDrawer(GravityCompat.START)
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 
-        binding.userHeaderCard.setOnClickListener {
+        binding.userHeaderCard.setOnClickListener { 
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 
-        binding.studyMaterialButton.setOnClickListener {
+        binding.studyMaterialButton.setOnClickListener { 
             val intent = Intent(this, StudyMaterialActivity::class.java)
             startActivity(intent)
         }
 
-        binding.viewAllRoomsButton.setOnClickListener {
+        binding.viewAllRoomsButton.setOnClickListener { 
             val intent = Intent(this, RoomListActivity::class.java)
             startActivity(intent)
         }
 
-        binding.fabCreateRoom.setOnClickListener {
+        binding.fabCreateRoom.setOnClickListener { 
             val intent = Intent(this, CreateRoomActivity::class.java)
             startActivity(intent)
         }

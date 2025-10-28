@@ -41,7 +41,7 @@ class QuestionDetailActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         answerAdapter = AnswerAdapter(emptyList()) { answer, voteType ->
-            viewModel.handleVote(answer, voteType)
+            viewModel.handleVote(answer.id, voteType)
         }
         binding.answersRecyclerView.adapter = answerAdapter
         binding.answersRecyclerView.layoutManager = LinearLayoutManager(this)

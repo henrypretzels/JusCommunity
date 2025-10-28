@@ -46,8 +46,3 @@ class AnswerAdapter(
         }
     }
 }
-
-enum class VoteType {
-    UP,
-    DOWN
-}

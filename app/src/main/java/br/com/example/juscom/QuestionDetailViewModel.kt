@@ -3,12 +3,21 @@ package br.com.example.juscom
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Transaction
+
+enum class VoteType {
+    UP,
+    DOWN
+}
 
 class QuestionDetailViewModel : ViewModel() {
 
     private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     private val _question = MutableLiveData<Question?>()
     val question: LiveData<Question?> = _question
@@ -19,13 +28,15 @@ class QuestionDetailViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _voteStatus = MutableLiveData<Map<String, VoteType?>>()
+    val voteStatus: LiveData<Map<String, VoteType?>> = _voteStatus
+
     fun loadQuestionAndAnswers(questionId: String) {
         if (questionId.isEmpty()) {
             _error.value = "Question ID is missing."
             return
         }
 
-        // Load the question details
         firestore.collection("questions").document(questionId).get()
             .addOnSuccessListener { document ->
                 _question.value = document.toObject(Question::class.java)
@@ -34,21 +45,87 @@ class QuestionDetailViewModel : ViewModel() {
                 _error.value = "Failed to load question: ${exception.message}"
             }
 
-        // Load the answers for the question, ordered by vote count
         firestore.collection("answers")
             .whereEqualTo("questionId", questionId)
             .orderBy("voteCount", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
-                _answers.value = result.toObjects(Answer::class.java)
+                val answerList = result.documents.map { doc ->
+                    val answer = doc.toObject(Answer::class.java)!!
+                    answer.id = doc.id
+                    answer
+                }
+                _answers.value = answerList
+                checkUserVotes(answerList.map { it.id })
             }
             .addOnFailureListener { exception ->
                 _error.value = "Failed to load answers: ${exception.message}"
             }
     }
 
-    fun handleVote(answer: Answer, voteType: VoteType) {
-        // TODO: Implement the Firestore transaction logic for voting in Phase 4.
-        _error.value = "Voting not implemented yet."
+    private fun checkUserVotes(answerIds: List<String>) {
+        val userId = auth.currentUser?.uid ?: return
+        if (answerIds.isEmpty()) return
+
+        val userVotes = mutableMapOf<String, VoteType?>()
+
+        answerIds.forEach { answerId ->
+            firestore.collection("answers").document(answerId)
+                .collection("votes").document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        when (document.getString("voteType")) {
+                            "up" -> userVotes[answerId] = VoteType.UP
+                            "down" -> userVotes[answerId] = VoteType.DOWN
+                            else -> userVotes[answerId] = null
+                        }
+                    } else {
+                        userVotes[answerId] = null
+                    }
+                    _voteStatus.value = userVotes
+                }
+        }
+    }
+
+    fun handleVote(answerId: String, voteType: VoteType) {
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            _error.value = "User not authenticated."
+            return
+        }
+
+        if (answerId.isEmpty()) {
+            _error.value = "Answer ID is invalid."
+            return
+        }
+
+        val answerRef = firestore.collection("answers").document(answerId)
+        val voteRef = answerRef.collection("votes").document(userId)
+
+        firestore.runTransaction(Transaction.Function { transaction ->
+            val voteDoc = transaction.get(voteRef)
+            val currentVote = if (voteDoc.exists()) voteDoc.getString("voteType") else null
+
+            if (currentVote == voteType.name.lowercase()) {
+                // User is undoing their vote
+                transaction.delete(voteRef)
+                val increment = if (voteType == VoteType.UP) -1L else 1L
+                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+            } else if (currentVote != null) {
+                // User is changing their vote
+                transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
+                val increment = if (voteType == VoteType.UP) 2L else -2L
+                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+            } else {
+                // User is casting a new vote
+                transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
+                val increment = if (voteType == VoteType.UP) 1L else -1L
+                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+            }
+            null
+        }).addOnFailureListener { e ->
+            _error.value = "Vote failed: ${e.message}"
+        }
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
     tools:context=".QuestionDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -15,7 +16,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:title="@string/question_detail_title" />
 
@@ -36,9 +36,8 @@
                 android:id="@+id/questionTitleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textColor="?attr/colorOnSurface"
                 tools:text="Qual a diferença entre dano moral e dano material?" />
 
             <TextView
@@ -46,8 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 tools:text="por Dr. João Silva" />
 
             <TextView
@@ -55,8 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="16sp"
-                android:textColor="@color/text_primary"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="?attr/colorOnSurface"
                 android:lineSpacingExtra="4dp"
                 tools:text="Estou com uma dúvida sobre a distinção exata entre os dois conceitos em um caso prático. Alguém poderia me ajudar a clarificar os pontos principais e talvez citar alguma jurisprudência relevante sobre o assunto?" />
 
@@ -65,16 +64,15 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
-                android:background="@color/divider_color" />
+                android:background="?attr/dividerHorizontal" />
 
             <TextView
                 android:id="@+id/answersHeaderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/answers_header"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"/>
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnSurface"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/answersRecyclerView"
