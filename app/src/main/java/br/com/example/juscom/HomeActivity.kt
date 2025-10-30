@@ -85,9 +85,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun updateUserInfo(user: User) {
         binding.userNameTextView.text = user.name
-        binding.userOabTextView.text = user.uf
         binding.userLevelTextView.text = "Nível ${user.level}"
         binding.userPointsTextView.text = "${user.points} XP"
+
+        if (user.uf.isNullOrEmpty()) {
+            binding.userOabTextView.visibility = View.GONE
+        } else {
+            binding.userOabTextView.visibility = View.VISIBLE
+            binding.userOabTextView.text = user.uf
+        }
 
         // Also update the navigation drawer header
         val headerView = binding.navigationView.getHeaderView(0)

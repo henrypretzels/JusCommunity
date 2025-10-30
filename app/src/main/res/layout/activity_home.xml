@@ -51,135 +51,134 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Top Row: Avatar and Basic Info -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
 
-                    <!-- Top Row: Avatar and Basic Info -->
+                    <ImageView
+                        android:id="@+id/userAvatarImageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="20dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circular_image"
+                        android:clipToOutline="true"
+                        android:src="@drawable/scales" />
+
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/userAvatarImageView"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginEnd="20dp"
-                            android:scaleType="centerCrop"
-                            android:background="@drawable/circular_image"
-                            android:clipToOutline="true"
-                            android:src="@drawable/scales" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/welcomeTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/home_welcome"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="14sp"
-                                android:layout_marginBottom="4dp" />
-
-                            <TextView
-                                android:id="@+id/userNameTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/user_name"
-                                android:textColor="@color/text_primary"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="8dp" />
-
-                            <TextView
-                                android:id="@+id/userOabTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/user_oab"
-                                android:textColor="@color/legal_blue"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:background="@drawable/oab_badge"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="12dp"
-                                android:paddingTop="6dp"
-                                android:paddingBottom="6dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/welcomeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:text="@string/home_welcome"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="4dp" />
 
-                            <TextView
-                                android:id="@+id/userPointsTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/user_points"
-                                android:textColor="@color/accent_gold"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/userNameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_name"
+                            android:textColor="@color/text_primary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
 
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/userOabTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_oab"
+                            android:textColor="@color/legal_blue"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:background="@drawable/oab_badge"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp" />
 
                     </LinearLayout>
 
-                    <!-- Bottom Row: Specialties and Level -->
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:gravity="center">
 
                         <TextView
-                            android:id="@+id/userLevelTextView"
+                            android:id="@+id/userPointsTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/user_level"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:background="@drawable/category_badge"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:layout_marginEnd="12dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/user_specialty"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="14sp"
-                            android:textStyle="italic" />
+                            android:text="@string/user_points"
+                            android:textColor="@color/accent_gold"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Bottom Row: Specialties and Level -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/userLevelTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_level"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/category_badge"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/user_specialty"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Fixed Description Text -->
         <TextView
             android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/home_description"
             android:textColor="@color/text_secondary"
             android:textSize="16sp"
@@ -188,33 +187,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/userHeaderCard" />
 
-        <!-- Fixed Header Section -->
         <LinearLayout
-            android:id="@+id/headerSection"
-            android:layout_width="match_parent"
+            android:id="@+id/headerSectionButtons"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="end"
             android:orientation="horizontal"
-            android:layout_margin="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionTextView">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/popular_rooms"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/studyMaterialButton"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:backgroundTint="@color/primary_blue"
                 android:text="@string/study_material"
                 android:textColor="@color/white"
@@ -222,15 +213,29 @@
 
             <Button
                 android:id="@+id/viewAllRoomsButton"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/view_all"
-                android:textSize="14sp"
                 android:backgroundTint="@color/primary_blue"
-                android:textColor="@color/white"
-                style="@style/Widget.Material3.Button.TextButton" />
+                android:text="@string/view_all"
+                android:textColor="@color/white" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/headerSectionTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/popular_rooms"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerSectionButtons" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_input_layout"
@@ -238,11 +243,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/search_rooms_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerSection">
+            app:layout_constraintTop_toBottomOf="@id/headerSectionTitle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_edit_text"
@@ -250,47 +256,38 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Scrollable Content Area -->
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/roomsRecyclerView"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_input_layout">
+            app:layout_constraintTop_toBottomOf="@id/search_input_layout" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/roomsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="16dp" />
-
-                <TextView
-                    android:id="@+id/noResultsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/no_results"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
+        <TextView
+            android:id="@+id/noResultsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_input_layout"
+            tools:visibility="visible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_room"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:backgroundTint="@color/primary_blue"
             android:contentDescription="@string/create_room"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -300,10 +297,9 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/navigation_menu" />
 
