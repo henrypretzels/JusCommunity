@@ -1,16 +1,20 @@
 package br.com.example.juscom
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class AnswerAdapter(
     private var answers: List<Answer>,
-    private val onVote: (Answer, VoteType) -> Unit
+    private val onVote: (Answer) -> Unit
 ) : RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder>() {
+
+    private var voteStatus = mapOf<String, VoteType?>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_answer, parent, false)
@@ -19,7 +23,7 @@ class AnswerAdapter(
 
     override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
         val answer = answers[position]
-        holder.bind(answer)
+        holder.bind(answer, voteStatus[answer.id])
     }
 
     override fun getItemCount(): Int = answers.size
@@ -29,20 +33,36 @@ class AnswerAdapter(
         notifyDataSetChanged()
     }
 
+    fun updateVoteStatus(newVoteStatus: Map<String, VoteType?>) {
+        voteStatus = newVoteStatus
+        notifyDataSetChanged()
+    }
+
     inner class AnswerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bodyTextView: TextView = itemView.findViewById(R.id.answerBodyTextView)
         private val authorTextView: TextView = itemView.findViewById(R.id.authorNameTextView)
         private val voteCountTextView: TextView = itemView.findViewById(R.id.voteCountTextView)
         private val upvoteButton: ImageButton = itemView.findViewById(R.id.upvoteButton)
-        private val downvoteButton: ImageButton = itemView.findViewById(R.id.downvoteButton)
 
-        fun bind(answer: Answer) {
+        fun bind(answer: Answer, currentVote: VoteType?) {
             bodyTextView.text = answer.body
             authorTextView.text = "por ${answer.authorName}"
             voteCountTextView.text = answer.voteCount.toString()
 
-            upvoteButton.setOnClickListener { onVote(answer, VoteType.UP) }
-            downvoteButton.setOnClickListener { onVote(answer, VoteType.DOWN) }
+            upvoteButton.setOnClickListener { onVote(answer) }
+
+            val context = itemView.context
+            val selectedColor = ContextCompat.getColor(context, R.color.legal_blue)
+            val defaultColor = ContextCompat.getColor(context, R.color.text_secondary)
+
+            val selectedTint = ColorStateList.valueOf(selectedColor)
+            val defaultTint = ColorStateList.valueOf(defaultColor)
+
+            if (currentVote == VoteType.UP) {
+                upvoteButton.imageTintList = selectedTint
+            } else {
+                upvoteButton.imageTintList = defaultTint
+            }
         }
     }
 }

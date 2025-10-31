@@ -1,6 +1,8 @@
 package br.com.example.juscom
 
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,7 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
+        setupClickListeners()
         observeViewModel()
 
         questionId?.let {
@@ -40,11 +43,24 @@ class QuestionDetailActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        answerAdapter = AnswerAdapter(emptyList()) { answer, voteType ->
-            viewModel.handleVote(answer.id, voteType)
+        answerAdapter = AnswerAdapter(emptyList()) { answer ->
+            viewModel.handleVote(answer.id)
         }
         binding.answersRecyclerView.adapter = answerAdapter
         binding.answersRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun setupClickListeners() {
+        binding.sendAnswerButton.setOnClickListener { 
+            val answerText = binding.answerEditText.text.toString().trim()
+            if (answerText.isNotEmpty()) {
+                questionId?.let { 
+                    viewModel.postAnswer(it, answerText)
+                } 
+            } else {
+                Toast.makeText(this, "A resposta não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -60,6 +76,19 @@ class QuestionDetailActivity : AppCompatActivity() {
         viewModel.answers.observe(this, Observer { answers ->
             answerAdapter.updateAnswers(answers)
             binding.answersHeaderTextView.text = "${answers.size} Respostas"
+        })
+
+        viewModel.voteStatus.observe(this, Observer { voteStatus ->
+            answerAdapter.updateVoteStatus(voteStatus)
+        })
+
+        viewModel.postResult.observe(this, Observer { success ->
+            if (success) {
+                binding.answerEditText.text.clear()
+                // Ocultar o teclado
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.answerEditText.windowToken, 0)
+            }
         })
 
         viewModel.error.observe(this, Observer { error ->
