@@ -21,19 +21,22 @@ Este documento resume o trabalho de desenvolvimento realizado, a metodologia uti
 
 ### **Semana 1: Conclusão do Q&A e Refatoração (24 de Outubro - 30 de Outubro)**
 
-**Meta:** Finalizar o ciclo completo de interação no fórum e continuar a melhoria da arquitetura do código.
+**Meta:** Finalizar o ciclo completo de interação no fórum e continuar a melhoria da arquitetura do código. **Status: Concluído.**
 
 1.  **Implementar Votação nas Respostas (Phase 4 do Q&A):**
+    *   **Status:** Concluído.
     *   **Tarefa:** Implementar a lógica de `Transaction` no `QuestionDetailViewModel` para garantir que o `voteCount` em uma resposta seja atualizado atomicamente.
     *   **Lógica:** Criar ou atualizar o documento na subcoleção `votes` e, na mesma operação, incrementar/decrementar o contador no documento da resposta.
     *   **Feedback Visual:** Atualizar a UI para refletir o novo `voteCount` e, opcionalmente, destacar os botões de voto para indicar a escolha do usuário.
 
 2.  **Implementar o Envio de Respostas (Phase 4 do Q&A):**
+    *   **Status:** Concluído.
     *   **Tarefa:** Adicionar um campo de texto e um botão "Enviar" na `QuestionDetailActivity`.
     *   **Lógica:** Criar a função no `ViewModel` para salvar um novo documento na coleção `answers`, associado ao `questionId`.
     *   **Atualização:** Fazer com que a lista de respostas seja atualizada automaticamente após o envio.
 
 3.  **Refatorar `ProfileActivity` para MVVM:**
+    *   **Status:** Concluído.
     *   **Tarefa:** Aplicar o mesmo padrão de refatoração da `HomeActivity`.
     *   **Ações:** Criar um `ProfileViewModel` para gerenciar a busca e a atualização dos dados do perfil do usuário, limpando a `ProfileActivity`.
 
