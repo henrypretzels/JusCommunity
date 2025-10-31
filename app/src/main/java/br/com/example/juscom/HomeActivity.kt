@@ -76,6 +76,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         viewModel.rooms.observe(this, Observer { rooms ->
             roomAdapter.updateRooms(rooms)
+            // Re-apply the filter in case the user typed before the list was loaded
+            roomAdapter.filter.filter(binding.searchEditText.text)
         })
 
         viewModel.error.observe(this, Observer { error ->
