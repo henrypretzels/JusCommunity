@@ -11,7 +11,8 @@ import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
 enum class VoteType {
-    UP
+    UP,
+    DOWN
 }
 
 class QuestionDetailViewModel : ViewModel() {
@@ -80,8 +81,12 @@ class QuestionDetailViewModel : ViewModel() {
                 .collection("votes").document(userId)
                 .get()
                 .addOnSuccessListener { document ->
-                    if (document.exists() && document.getString("voteType") == "up") {
-                        userVotes[answerId] = VoteType.UP
+                    if (document.exists()) {
+                        when (document.getString("voteType")) {
+                            "up" -> userVotes[answerId] = VoteType.UP
+                            "down" -> userVotes[answerId] = VoteType.DOWN
+                            else -> userVotes[answerId] = null
+                        }
                     } else {
                         userVotes[answerId] = null
                     }
@@ -90,7 +95,7 @@ class QuestionDetailViewModel : ViewModel() {
         }
     }
 
-    fun handleVote(answerId: String) {
+    fun handleVote(answerId: String, voteType: VoteType) {
         val userId = auth.currentUser?.uid
         if (userId == null) {
             _error.value = "User not authenticated."
@@ -102,15 +107,28 @@ class QuestionDetailViewModel : ViewModel() {
 
         firestore.runTransaction { transaction ->
             val voteDoc = transaction.get(voteRef)
+            val currentVoteString = if (voteDoc.exists()) voteDoc.getString("voteType") else null
+            val currentVote = when(currentVoteString) {
+                "up" -> VoteType.UP
+                "down" -> VoteType.DOWN
+                else -> null
+            }
 
-            if (voteDoc.exists()) {
+            if (currentVote == voteType) {
                 // User is undoing their vote
                 transaction.delete(voteRef)
-                transaction.update(answerRef, "voteCount", FieldValue.increment(-1))
+                val increment = if (voteType == VoteType.UP) -1L else 1L
+                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+            } else if (currentVote != null) {
+                // User is changing their vote
+                transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
+                val increment = if (voteType == VoteType.UP) 2L else -2L // UP to DOWN is -2, DOWN to UP is +2
+                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
             } else {
                 // User is casting a new vote
-                transaction.set(voteRef, mapOf("voteType" to "up"))
-                transaction.update(answerRef, "voteCount", FieldValue.increment(1))
+                transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
+                val increment = if (voteType == VoteType.UP) 1L else -1L
+                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
             }
             null
         }.addOnFailureListener { e ->

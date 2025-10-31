@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AnswerAdapter(
     private var answers: List<Answer>,
-    private val onVote: (Answer) -> Unit
+    private val onVote: (Answer, VoteType) -> Unit
 ) : RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder>() {
 
     private var voteStatus = mapOf<String, VoteType?>()
@@ -43,13 +43,15 @@ class AnswerAdapter(
         private val authorTextView: TextView = itemView.findViewById(R.id.authorNameTextView)
         private val voteCountTextView: TextView = itemView.findViewById(R.id.voteCountTextView)
         private val upvoteButton: ImageButton = itemView.findViewById(R.id.upvoteButton)
+        private val downvoteButton: ImageButton = itemView.findViewById(R.id.downvoteButton)
 
         fun bind(answer: Answer, currentVote: VoteType?) {
             bodyTextView.text = answer.body
             authorTextView.text = "por ${answer.authorName}"
             voteCountTextView.text = answer.voteCount.toString()
 
-            upvoteButton.setOnClickListener { onVote(answer) }
+            upvoteButton.setOnClickListener { onVote(answer, VoteType.UP) }
+            downvoteButton.setOnClickListener { onVote(answer, VoteType.DOWN) }
 
             val context = itemView.context
             val selectedColor = ContextCompat.getColor(context, R.color.legal_blue)
@@ -58,10 +60,19 @@ class AnswerAdapter(
             val selectedTint = ColorStateList.valueOf(selectedColor)
             val defaultTint = ColorStateList.valueOf(defaultColor)
 
-            if (currentVote == VoteType.UP) {
-                upvoteButton.imageTintList = selectedTint
-            } else {
-                upvoteButton.imageTintList = defaultTint
+            when (currentVote) {
+                VoteType.UP -> {
+                    upvoteButton.imageTintList = selectedTint
+                    downvoteButton.imageTintList = defaultTint
+                }
+                VoteType.DOWN -> {
+                    upvoteButton.imageTintList = defaultTint
+                    downvoteButton.imageTintList = selectedTint
+                }
+                else -> {
+                    upvoteButton.imageTintList = defaultTint
+                    downvoteButton.imageTintList = defaultTint
+                }
             }
         }
     }
