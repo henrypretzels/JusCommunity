@@ -122,3 +122,11 @@ level: number
 name: string
 points: number
 uf (Unidade Federativa): string
+
+study_materials- Main Collection. Fields:
+title: string
+description: string
+authorName: string
+category: string
+fileURL: string
+timestamp: timestamp

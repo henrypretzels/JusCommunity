@@ -1,6 +1,10 @@
 package br.com.example.juscom
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.example.juscom.databinding.ActivityStudyMaterialBinding
@@ -8,6 +12,7 @@ import br.com.example.juscom.databinding.ActivityStudyMaterialBinding
 class StudyMaterialActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudyMaterialBinding
     private lateinit var studyMaterialAdapter: StudyMaterialAdapter
+    private val viewModel: StudyMaterialViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +21,9 @@ class StudyMaterialActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
+        observeViewModel()
+
+        viewModel.loadStudyMaterials()
     }
 
     private fun setupToolbar() {
@@ -25,9 +33,15 @@ class StudyMaterialActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val materials = getStudyMaterials().toMutableList()
-        studyMaterialAdapter = StudyMaterialAdapter(materials) { material ->
-            // Handle click on study material
+        studyMaterialAdapter = StudyMaterialAdapter(mutableListOf()) { material ->
+            material.fileUrl?.let {
+                if (it.isNotEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Link do material indisponível.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.studyMaterialRecyclerView.apply {
@@ -36,12 +50,14 @@ class StudyMaterialActivity : AppCompatActivity() {
         }
     }
 
-    private fun getStudyMaterials(): List<StudyMaterial> {
-        return listOf(
-            StudyMaterial(1, "Vade Mecum 2024", "Vade Mecum completo e atualizado para 2024", "Legislação", "Editora JusPodivm", "01/01/2024"),
-            StudyMaterial(2, "Manual de Direito Constitucional", "Manual completo de Direito Constitucional", "Doutrina", "Alexandre de Moraes", "15/02/2024"),
-            StudyMaterial(3, "Peças Práticas de Direito Penal", "Modelos de peças práticas para 2ª fase da OAB", "Prática", "Equipe JusCom", "20/03/2024"),
-        )
+    private fun observeViewModel() {
+        viewModel.materials.observe(this) { materials ->
+            studyMaterialAdapter.updateMaterials(materials)
+        }
+
+        viewModel.error.observe(this) { errorMessage ->
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

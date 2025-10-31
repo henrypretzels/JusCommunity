@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import java.text.SimpleDateFormat
+import java.util.*
 
 class StudyMaterialAdapter(
     private var materials: MutableList<StudyMaterial>,
@@ -32,12 +34,16 @@ class StudyMaterialAdapter(
     override fun onBindViewHolder(holder: StudyMaterialViewHolder, position: Int) {
         val material = materials[position]
 
-        holder.materialImage.setImageResource(material.imageResource)
+        holder.materialImage.setImageResource(R.drawable.scales) // Default image
         holder.materialTitle.text = material.title
         holder.materialDescription.text = material.description
         holder.materialCategory.text = material.category
-        holder.materialAuthor.text = material.author
-        holder.materialDate.text = material.date
+        holder.materialAuthor.text = material.authorName
+        
+        // Format timestamp to date string
+        holder.materialDate.text = material.timestamp?.toDate()?.let {
+            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
+        } ?: "N/A"
 
         holder.cardView.setOnClickListener {
             onMaterialClick(material)
@@ -45,4 +51,10 @@ class StudyMaterialAdapter(
     }
 
     override fun getItemCount(): Int = materials.size
+
+    fun updateMaterials(newMaterials: List<StudyMaterial>) {
+        materials.clear()
+        materials.addAll(newMaterials)
+        notifyDataSetChanged()
+    }
 }
