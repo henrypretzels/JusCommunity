@@ -12,13 +12,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_white">
+        android:background="?android:attr/colorBackground">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_blue"
+            android:background="?attr/colorPrimary"
             app:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,10 +28,10 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/primary_blue"
+                android:background="?attr/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextColor="@color/white" />
+                app:titleTextColor="?attr/colorOnPrimary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -44,8 +44,8 @@
             android:layout_marginBottom="8dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="8dp"
-            app:cardBackgroundColor="@color/card_background"
-            app:strokeColor="@color/divider_color"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorSurfaceVariant"
             app:strokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/home_welcome"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="14sp"
                             android:layout_marginBottom="4dp" />
 
@@ -95,7 +95,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/user_name"
-                            android:textColor="@color/text_primary"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:layout_marginBottom="8dp" />
@@ -105,7 +105,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/user_oab"
-                            android:textColor="@color/legal_blue"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
 
@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/user_points"
-                            android:textColor="@color/accent_gold"
+                            android:textColor="?attr/colorSecondary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -142,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/user_level"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:background="@drawable/category_badge"
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/user_specialty"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp"
                         android:textStyle="italic" />
 
@@ -175,7 +175,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/home_description"
-            android:textColor="@color/text_secondary"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="16sp"
             android:lineSpacingExtra="4dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,9 +201,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="@color/primary_blue"
+                android:backgroundTint="?attr/colorPrimary"
                 android:text="@string/study_material"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="14sp" />
 
             <Button
@@ -211,9 +211,9 @@
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/primary_blue"
+                android:backgroundTint="?attr/colorPrimary"
                 android:text="@string/view_all"
-                android:textColor="@color/white" />
+                android:textColor="?attr/colorOnPrimary" />
 
         </LinearLayout>
 
@@ -225,7 +225,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/popular_rooms"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -282,7 +282,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/primary_blue"
+            android:backgroundTint="?attr/colorPrimary"
             android:contentDescription="@string/create_room"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
