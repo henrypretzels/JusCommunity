@@ -32,6 +32,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/arrow_imageview"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Como criar um forum?" />
@@ -42,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_arrow_down" />
+                android:src="@drawable/ic_arrow_down"
+                app:tint="?attr/colorOnSurface" />
 
         </RelativeLayout>
 
@@ -60,6 +62,7 @@
                 android:id="@+id/answer_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 tools:text="(Details on how to create a new room will go here.)" />
 
         </LinearLayout>

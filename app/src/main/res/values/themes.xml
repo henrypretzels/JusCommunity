@@ -9,9 +9,9 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="android:colorBackground">@color/background_white</item>
         <item name="colorOnBackground">@color/text_primary</item>
-        <item name="colorSurface">@color/legal_blue</item>
-        <item name="colorOnSurface">@color/white</item>
-        <item name="colorSurfaceVariant">@color/light_gray</item>
+        <item name="colorSurface">@color/background_white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/medium_gray</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
     </style>
 
@@ -20,6 +20,11 @@
     <style name="Theme.JusCom.NoActionBar" parent="Theme.JusCom">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="tint">?attr/colorOnPrimary</item>
     </style>
     
 </resources>

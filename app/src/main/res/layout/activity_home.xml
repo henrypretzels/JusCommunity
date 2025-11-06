@@ -241,6 +241,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/search_rooms_hint"
+            android:textColorHint="?attr/colorPrimary"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxStrokeColor="?attr/colorPrimary"
+            app:hintTextColor="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/headerSectionTitle">
@@ -279,10 +283,10 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_room"
+            style="@style/App.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:backgroundTint="?attr/colorPrimary"
             android:contentDescription="@string/create_room"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
