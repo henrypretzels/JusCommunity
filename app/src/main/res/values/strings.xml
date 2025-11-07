@@ -30,6 +30,10 @@
     <string name="view_materials_button">Ver Materiais</string>
     <string name="study_material">Material de Estudo</string>
     <string name="study_material_title">Material de Estudo</string>
+    <string name="add_study_material">Adicionar material de estudo</string>
+    <string name="material_title_hint">Título do material</string>
+    <string name="material_description_hint">Descrição do material</string>
+    <string name="material_category_hint">Categoria do material</string>
 
     <string name="user_name">Dr. João Silva</string>
     <string name="user_points">1.250 pontos</string>
