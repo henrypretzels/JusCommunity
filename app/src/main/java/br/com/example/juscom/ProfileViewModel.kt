@@ -20,6 +20,9 @@ class ProfileViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _earnedBadges = MutableLiveData<List<EarnedBadge>>()
+    val earnedBadges: LiveData<List<EarnedBadge>> = _earnedBadges
+
     init {
         fetchUserData()
     }
@@ -34,10 +37,52 @@ class ProfileViewModel : ViewModel() {
         firestore.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
                 _user.value = document.toObject(User::class.java)
+                // After fetching the user, fetch their badges
+                fetchEarnedBadges(userId)
             }
             .addOnFailureListener { exception ->
                 _error.value = "Failed to fetch user data: ${exception.message}"
             }
+    }
+
+    private fun fetchEarnedBadges(userId: String) {
+        firestore.collection("users").document(userId).collection("earned_badges").get()
+            .addOnSuccessListener { snapshot ->
+                val earnedBadgesList = snapshot.toObjects(EarnedBadge::class.java)
+                // Now, for each earned badge, fetch the full badge details
+                fetchBadgeDetails(earnedBadgesList)
+            }
+            .addOnFailureListener { exception ->
+                _error.value = "Failed to fetch earned badges: ${exception.message}"
+            }
+    }
+
+    private fun fetchBadgeDetails(earnedBadges: List<EarnedBadge>) {
+        if (earnedBadges.isEmpty()) {
+            _earnedBadges.value = emptyList()
+            return
+        }
+
+        val badgeDocs = firestore.collection("badges")
+        val populatedBadges = mutableListOf<EarnedBadge>()
+        var completedCount = 0
+
+        for (earnedBadge in earnedBadges) {
+            badgeDocs.document(earnedBadge.badgeId).get()
+                .addOnSuccessListener { badgeSnapshot ->
+                    val badge = badgeSnapshot.toObject(Badge::class.java)
+                    if (badge != null) {
+                        earnedBadge.badge = badge
+                        populatedBadges.add(earnedBadge)
+                    }
+                }
+                .addOnCompleteListener {
+                    completedCount++
+                    if (completedCount == earnedBadges.size) {
+                        _earnedBadges.value = populatedBadges
+                    }
+                }
+        }
     }
 
     fun updateUserData(name: String, institution: String, uf: String) {

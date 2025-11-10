@@ -6,11 +6,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.example.juscom.databinding.ActivityProfileBinding
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by viewModels()
+    private lateinit var badgeAdapter: BadgeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +20,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
+        setupRecyclerView()
         setupClickListeners()
         observeViewModel()
     }
@@ -28,9 +31,22 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar?.title = "Meu Perfil"
     }
 
+    private fun setupRecyclerView() {
+        // The adapter is initialized with an empty list first
+        badgeAdapter = BadgeAdapter(emptyList())
+        binding.badgesRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.badgesRecyclerView.adapter = badgeAdapter
+    }
+
     private fun observeViewModel() {
         viewModel.user.observe(this, Observer { user ->
             user?.let { populateUi(it) }
+        })
+
+        viewModel.earnedBadges.observe(this, Observer { badges ->
+            // When the list of badges is fetched, update the adapter
+            badgeAdapter = BadgeAdapter(badges)
+            binding.badgesRecyclerView.adapter = badgeAdapter
         })
 
         viewModel.updateResult.observe(this, Observer { success ->

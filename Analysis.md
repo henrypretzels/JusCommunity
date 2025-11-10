@@ -233,7 +233,7 @@ Este documento resume o trabalho de desenvolvimento realizado, a metodologia uti
 
 ### **SettingsActivity (`activity_settings.xml`)**
 
-*   **Análise:** A tela de configurações utiliza atributos de tema para a `Toolbar` e para o botão de "Apagar Conta" (`?attr/colorError`), o que é uma ótima prática. Os demais componentes, como os `SwitchMaterial`, usam estilos padrão que se adaptam bem aos temas.
+*   **Análise:** A tela de configurações utiliza atributos de tema para a `Toolbar` e para o botão de "Apagar Conta" (`?attr/colorError`), o que é una ótima prática. Os demais componentes, como os `SwitchMaterial`, usam estilos padrão que se adaptam bem aos temas.
 *   **Problema:** Nenhum problema crítico foi encontrado.
 *   **Recomendação:** Nenhuma alteração é necessária. O layout está bem implementado para suportar os temas.
 
@@ -314,6 +314,63 @@ Ambos os arquivos `themes.xml` (claro) e `themes.xml (night)` (escuro) demonstra
 
 Este plano de ação fornece um roteiro claro e incremental para as próximas semanas, focando em entregar valor a cada etapa e mantendo a alta qualidade da base de código.
 
+## Firestore Database Analysis for Incentive System
+
+To implement the Levels and Badges feature, the following changes and additions to the Firestore database are recommended. This structure ensures scalability and separates the definitions of badges from the user data.
+
+### 1. New Main Collection: `badges`
+
+*   **Purpose:** This collection will act as a central repository for all available badges in the application. It defines what badges can be earned.
+*   **Fields:**
+    *   `name`: `string` (e.g., "Helpful Answer," "Prolific Contributor")
+    *   `description`: `string` (e.g., "Awarded for receiving 10 upvotes on a single answer")
+    *   `iconUrl`: `string` (URL to the badge's image)
+    *   `criteria`: `map` (Defines the conditions to earn the badge, e.g., `{ "action": "upvotes_on_answer", "count": 10 }`)
+
+### 2. New Subcollection on `users`: `earned_badges`
+
+*   **Purpose:** To track which badges a specific user has acquired. This is more scalable than embedding an array of badges directly within the user document.
+*   **Location:** `users/{userId}/earned_badges/{badgeId}`
+*   **Fields:**
+    *   `badgeId`: `string` (A reference to a document in the `badges` collection)
+    *   `timestamp`: `timestamp` (When the badge was earned)
+
+### Modifications to Existing Collections
+
+*   **`users` Collection:** No new fields are immediately necessary, as `points` (for XP) and `level` are already present. Your application logic will be responsible for incrementing the `points` field based on user actions. When points cross a certain threshold, the `level` field will be updated.
+
+### How It Works Together
+
+1.  A user performs an action (e.g., their answer in the `answers` collection gets an upvote).
+2.  Your backend logic (e.g., Firebase Functions) or client-side logic increments the `points` in the corresponding user's document in the `users` collection.
+3.  The logic then checks if the user's new point total or action count meets the `criteria` for any badge defined in the `badges` collection.
+4.  If a criterion is met, a new document is created in the `users/{userId}/earned_badges` subcollection to signify that the user has earned that badge.
+
+### Badge Criteria & Icon Workflow
+
+This section provides concrete examples for badge criteria and outlines the recommended workflow for handling badge icons.
+
+#### Example Criteria Maps
+
+*   **Badge: "Question Starter"** (For posting the first question)
+    *   `criteria`: `{ "action": "create_question", "count": 1 }`
+*   **Badge: "Contributor"** (For posting the first answer)
+    *   `criteria`: `{ "action": "create_answer", "count": 1 }`
+*   **Badge: "First Upvote"** (For receiving the first upvote on any answer)
+    *   `criteria`: `{ "action": "receive_upvote", "count": 1 }`
+*   **Badge: "Helpful Answer"** (For receiving 10 upvotes on a single answer)
+    *   `criteria`: `{ "action": "upvotes_on_answer", "count": 10 }`
+
+#### Icon Creation and Storage Workflow
+
+The `iconUrl` field in the `badges` collection should point to an image file hosted online. The recommended approach is to use Firebase Storage.
+
+1.  **Create Icon:** Design your badge icons in a tool like Figma or Illustrator and export them as `.png` or `.svg` files.
+2.  **Upload to Firebase Storage:** In your Firebase Console, navigate to Storage. Create a folder (e.g., `badge_icons`) and upload your image files there.
+3.  **Get Download URL:** After uploading, select the file to view its details. Copy the "Download URL" provided.
+4.  **Store in Firestore:** Paste the copied URL into the `iconUrl` field for the corresponding badge document in your `badges` collection.
+5.  **Display in App:** Use an image-loading library like Glide or Coil in your Android app to load the image from the URL into an `ImageView`.
+
 Important note:
 The project has these Firestore Database collections and subcollections:
 
@@ -348,6 +405,7 @@ category: string
 description: string
 name: string
 subscribersCount: number
+
 users- Main Collection. Fields:
 email: string
 institution: string

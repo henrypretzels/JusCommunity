@@ -14,6 +14,7 @@ class CreateQuestionActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private var roomId: String? = null
+    private lateinit var incentiveManager: IncentiveManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,7 @@ class CreateQuestionActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         roomId = intent.getStringExtra("ROOM_ID")
+        incentiveManager = IncentiveManager()
 
         setupToolbar()
 
@@ -70,6 +72,7 @@ class CreateQuestionActivity : AppCompatActivity() {
         firestore.collection("questions").add(question)
             .addOnSuccessListener {
                 Toast.makeText(this, "Question submitted successfully!", Toast.LENGTH_SHORT).show()
+                incentiveManager.handleQuestionCreated(currentUser.uid)
                 finish()
             }
             .addOnFailureListener { e ->

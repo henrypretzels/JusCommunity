@@ -19,6 +19,7 @@ class QuestionDetailViewModel : ViewModel() {
 
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+    private val incentiveManager = IncentiveManager()
 
     private val _question = MutableLiveData<Question?>()
     val question: LiveData<Question?> = _question
@@ -105,34 +106,56 @@ class QuestionDetailViewModel : ViewModel() {
         val answerRef = firestore.collection("answers").document(answerId)
         val voteRef = answerRef.collection("votes").document(userId)
 
-        firestore.runTransaction { transaction ->
-            val voteDoc = transaction.get(voteRef)
-            val currentVoteString = if (voteDoc.exists()) voteDoc.getString("voteType") else null
-            val currentVote = when(currentVoteString) {
-                "up" -> VoteType.UP
-                "down" -> VoteType.DOWN
-                else -> null
+        // First, get the answer to find its author
+        answerRef.get().addOnSuccessListener { answerDoc ->
+            val answerAuthorId = answerDoc.getString("authorId")
+
+            // Prevent users from upvoting their own answers for points
+            if (userId == answerAuthorId) {
+                return@addOnSuccessListener
             }
 
-            if (currentVote == voteType) {
-                // User is undoing their vote
-                transaction.delete(voteRef)
-                val increment = if (voteType == VoteType.UP) -1L else 1L
-                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
-            } else if (currentVote != null) {
-                // User is changing their vote
-                transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
-                val increment = if (voteType == VoteType.UP) 2L else -2L // UP to DOWN is -2, DOWN to UP is +2
-                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
-            } else {
-                // User is casting a new vote
-                transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
-                val increment = if (voteType == VoteType.UP) 1L else -1L
-                transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+            firestore.runTransaction { transaction ->
+                val voteDoc = transaction.get(voteRef)
+                val currentVoteString = if (voteDoc.exists()) voteDoc.getString("voteType") else null
+                val currentVote = when (currentVoteString) {
+                    "up" -> VoteType.UP
+                    "down" -> VoteType.DOWN
+                    else -> null
+                }
+                
+                var isNewUpvote = false
+
+                if (currentVote == voteType) {
+                    // User is undoing their vote
+                    transaction.delete(voteRef)
+                    val increment = if (voteType == VoteType.UP) -1L else 1L
+                    transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+                } else if (currentVote != null) {
+                    // User is changing their vote
+                    transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
+                    val increment = if (voteType == VoteType.UP) 2L else -2L // UP to DOWN is -2, DOWN to UP is +2
+                    transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+                    if (voteType == VoteType.UP) isNewUpvote = true
+                } else {
+                    // User is casting a new vote
+                    transaction.set(voteRef, mapOf("voteType" to voteType.name.lowercase()))
+                    val increment = if (voteType == VoteType.UP) 1L else -1L
+                    transaction.update(answerRef, "voteCount", FieldValue.increment(increment))
+                    if (voteType == VoteType.UP) isNewUpvote = true
+                }
+                
+                isNewUpvote // Return this value from the transaction
+
+            }.addOnSuccessListener { isNewUpvote ->
+                if (isNewUpvote && answerAuthorId != null) {
+                     incentiveManager.handleAnswerUpvoted(answerAuthorId)
+                }
+            }.addOnFailureListener { e ->
+                _error.value = "Vote failed: ${e.message}"
             }
-            null
         }.addOnFailureListener { e ->
-            _error.value = "Vote failed: ${e.message}"
+             _error.value = "Could not get answer details: ${e.message}"
         }
     }
 
@@ -162,6 +185,7 @@ class QuestionDetailViewModel : ViewModel() {
             null
         }.addOnSuccessListener {
             _postResult.value = true
+            incentiveManager.handleAnswerCreated(userId)
         }.addOnFailureListener { e ->
             _error.value = "Failed to post answer: ${e.message}"
             _postResult.value = false
