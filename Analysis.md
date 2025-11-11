@@ -423,3 +423,13 @@ fileURL: string
 timestamp: timestamp
 
 Implement one UI/UX Change at a given time.
+
+Supabase and AppWrite
+
+Issues:
+
+In the home page, the XP amount is not updating.
+User cannot answer own question and upvote themselves.
+In the activity that shows the questions of the room, but not the questions themselves, still have issues with updating the actual answer amount.
+An elaborate toast for leveling up might be appreciated.
+Changing from dark to light mode causes flickers on the screen

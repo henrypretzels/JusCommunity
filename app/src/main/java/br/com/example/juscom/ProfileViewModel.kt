@@ -23,6 +23,16 @@ class ProfileViewModel : ViewModel() {
     private val _earnedBadges = MutableLiveData<List<EarnedBadge>>()
     val earnedBadges: LiveData<List<EarnedBadge>> = _earnedBadges
 
+    // New LiveData for XP Progress
+    private val _xpProgress = MutableLiveData<Int>()
+    val xpProgress: LiveData<Int> = _xpProgress
+
+    private val _xpProgressMax = MutableLiveData<Int>()
+    val xpProgressMax: LiveData<Int> = _xpProgressMax
+
+    private val _xpProgressText = MutableLiveData<String>()
+    val xpProgressText: LiveData<String> = _xpProgressText
+
     init {
         fetchUserData()
     }
@@ -36,13 +46,31 @@ class ProfileViewModel : ViewModel() {
 
         firestore.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
-                _user.value = document.toObject(User::class.java)
-                // After fetching the user, fetch their badges
-                fetchEarnedBadges(userId)
+                val user = document.toObject(User::class.java)
+                _user.value = user
+                user?.let {
+                    calculateXpProgress(it)
+                    fetchEarnedBadges(userId)
+                }
             }
             .addOnFailureListener { exception ->
                 _error.value = "Failed to fetch user data: ${exception.message}"
             }
+    }
+
+    private fun calculateXpProgress(user: User) {
+        val currentLevel = user.level.toInt()
+        val currentPoints = user.points
+
+        val xpForCurrentLevel = LevelingManager.getPointsForLevel(currentLevel)
+        val xpForNextLevel = LevelingManager.getPointsForLevel(currentLevel + 1)
+
+        val progressInLevel = currentPoints - xpForCurrentLevel
+        val totalInRange = xpForNextLevel - xpForCurrentLevel
+
+        _xpProgress.value = progressInLevel.toInt()
+        _xpProgressMax.value = totalInRange.toInt()
+        _xpProgressText.value = "$currentPoints / $xpForNextLevel XP"
     }
 
     private fun fetchEarnedBadges(userId: String) {

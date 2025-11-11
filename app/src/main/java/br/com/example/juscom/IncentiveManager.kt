@@ -10,8 +10,8 @@ class IncentiveManager {
 
     companion object {
         // Define points for actions
-        private const val POINTS_FOR_QUESTION = 5L
-        private const val POINTS_FOR_ANSWER = 10L
+        private const val POINTS_FOR_QUESTION = 10L
+        private const val POINTS_FOR_ANSWER = 50L
         private const val POINTS_FOR_UPVOTE_RECEIVED = 2L
     }
 
@@ -41,7 +41,30 @@ class IncentiveManager {
 
     private fun awardPoints(userId: String, points: Long) {
         val userRef = firestore.collection("users").document(userId)
+
+        // Atomically increment the points
         userRef.update("points", FieldValue.increment(points))
+            .addOnSuccessListener {
+                // After points are awarded, check for a level up
+                checkAndApplyLevelUp(userId)
+            }
+    }
+
+    private fun checkAndApplyLevelUp(userId: String) {
+        val userRef = firestore.collection("users").document(userId)
+
+        userRef.get().addOnSuccessListener { userSnapshot ->
+            if (!userSnapshot.exists()) return@addOnSuccessListener
+
+            val currentPoints = userSnapshot.getLong("points") ?: 0L
+            val currentLevel = userSnapshot.getLong("level") ?: 1L
+
+            val newCalculatedLevel = LevelingManager.calculateLevelFromPoints(currentPoints)
+
+            if (newCalculatedLevel > currentLevel) {
+                userRef.update("level", newCalculatedLevel)
+            }
+        }
     }
 
     private fun checkForBadge(userId: String, action: String) {

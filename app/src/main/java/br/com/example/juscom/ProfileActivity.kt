@@ -49,6 +49,19 @@ class ProfileActivity : AppCompatActivity() {
             binding.badgesRecyclerView.adapter = badgeAdapter
         })
 
+        // Observers for XP Progress
+        viewModel.xpProgress.observe(this, Observer { progress ->
+            binding.profileXpBar.progress = progress
+        })
+
+        viewModel.xpProgressMax.observe(this, Observer { max ->
+            binding.profileXpBar.max = max
+        })
+
+        viewModel.xpProgressText.observe(this, Observer { text ->
+            binding.profileXpProgress.text = text
+        })
+
         viewModel.updateResult.observe(this, Observer { success ->
             if (success) {
                 Toast.makeText(this, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
