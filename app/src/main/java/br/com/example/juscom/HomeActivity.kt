@@ -48,6 +48,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
+        // Refresh both user data and rooms when the activity is resumed
+        viewModel.loadUserData()
         viewModel.loadRooms()
     }
 
