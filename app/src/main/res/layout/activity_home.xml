@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="16dp">
 
                     <!-- Top Row: Avatar and Basic Info -->
                     <LinearLayout
@@ -67,8 +67,8 @@
 
                         <ImageView
                             android:id="@+id/userAvatarImageView"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_marginEnd="20dp"
                             android:scaleType="centerCrop"
                             android:background="@drawable/circular_image"
@@ -112,7 +112,8 @@
                                 android:paddingStart="12dp"
                                 android:paddingEnd="12dp"
                                 android:paddingTop="6dp"
-                                android:paddingBottom="6dp" />
+                                android:paddingBottom="6dp"
+                                android:visibility="gone" /> // --- status gone: desativa / reativar: visible ---
 
                         </LinearLayout>
 
@@ -201,6 +202,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_margin="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
