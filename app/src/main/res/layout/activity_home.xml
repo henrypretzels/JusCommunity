@@ -113,7 +113,7 @@
                                 android:paddingEnd="12dp"
                                 android:paddingTop="6dp"
                                 android:paddingBottom="6dp"
-                                android:visibility="gone" /> // --- status gone: desativa / reativar: visible ---
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
