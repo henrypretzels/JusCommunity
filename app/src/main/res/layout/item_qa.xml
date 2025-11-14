@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="4dp">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="20dp" />
 
         <TextView
             android:id="@+id/answerText"
@@ -32,7 +32,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:lineSpacingExtra="2dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
