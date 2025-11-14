@@ -25,18 +25,17 @@ class QuestionListViewModel : ViewModel() {
         firestore.collection("questions")
             .whereEqualTo("roomId", roomId)
             .orderBy("timestamp", Query.Direction.DESCENDING)
-            .addSnapshotListener { snapshots, e ->
-                if (e != null) {
-                    _error.value = "Failed to load questions: ${e.message}"
-                    return@addSnapshotListener
-                }
-
+            .get()
+            .addOnSuccessListener { snapshots ->
                 val questionList = snapshots!!.documents.mapNotNull { doc ->
                     val question = doc.toObject(Question::class.java)
                     question?.id = doc.id
                     question
                 }
                 _questions.value = questionList
+            }
+            .addOnFailureListener { e ->
+                _error.value = "Failed to load questions: ${e.message}"
             }
     }
 }

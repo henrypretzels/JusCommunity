@@ -82,10 +82,11 @@ class QuestionDetailActivity : AppCompatActivity() {
             answerAdapter.updateVoteStatus(voteStatus)
         })
 
-        viewModel.postResult.observe(this, Observer { success ->
-            if (success) {
+        viewModel.postResult.observe(this, Observer { isPosting ->
+            binding.sendAnswerButton.isEnabled = !isPosting
+
+            if (!isPosting) {
                 binding.answerEditText.text.clear()
-                // Ocultar o teclado
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(binding.answerEditText.windowToken, 0)
             }

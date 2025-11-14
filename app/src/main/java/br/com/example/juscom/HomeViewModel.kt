@@ -25,11 +25,11 @@ class HomeViewModel : ViewModel() {
     val error: LiveData<String> = _error
 
     init {
-        loadUserInfo()
+        loadUserData()
         loadRooms()
     }
 
-    private fun loadUserInfo() {
+    fun loadUserData() {
         val uid = auth.currentUser?.uid
         if (uid == null) {
             _user.value = null

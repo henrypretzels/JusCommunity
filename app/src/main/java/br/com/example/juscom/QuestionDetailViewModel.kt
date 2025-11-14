@@ -42,7 +42,9 @@ class QuestionDetailViewModel : ViewModel() {
             return
         }
 
-        firestore.collection("questions").document(questionId).get()
+        val questionRef = firestore.collection("questions").document(questionId)
+
+        questionRef.get()
             .addOnSuccessListener { document ->
                 val questionData = document.toObject(Question::class.java)
                 questionData?.id = document.id
@@ -68,6 +70,12 @@ class QuestionDetailViewModel : ViewModel() {
                 }
                 _answers.value = answerList
                 checkUserVotes(answerList.map { it.id })
+
+                // Correct the answer count if it's out of sync
+                val currentQuestion = _question.value
+                if (currentQuestion != null && currentQuestion.answerCount != answerList.size.toLong()) {
+                    questionRef.update("answerCount", answerList.size)
+                }
             }
     }
 
@@ -168,6 +176,8 @@ class QuestionDetailViewModel : ViewModel() {
             return
         }
 
+        _postResult.value = false // Disable button
+
         val newAnswer = Answer(
             questionId = questionId,
             body = body,
@@ -188,7 +198,7 @@ class QuestionDetailViewModel : ViewModel() {
             incentiveManager.handleAnswerCreated(userId)
         }.addOnFailureListener { e ->
             _error.value = "Failed to post answer: ${e.message}"
-            _postResult.value = false
+            _postResult.value = true // Re-enable button on failure
         }
     }
 }

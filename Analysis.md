@@ -1,6 +1,30 @@
 # Análise do Projeto JusCom e Próximos Passos
 
-Este documento resume o trabalho de desenvolvimento realizado, a metodologia utilizada e os próximos passos recomendados para o projeto JusCom.
+Este documento resume a arquitetura funcional do projeto JusCom, detalha as análises técnicas realizadas e estabelece os próximos passos para o desenvolvimento contínuo.
+
+---
+
+## Arquitetura Funcional do Projeto
+
+A seguir, uma descrição das funcionalidades centrais do aplicativo, organizadas de acordo com a jornada do usuário.
+
+### 1. Funções Essenciais de Usuário (Login e Registro)
+A base da experiência do usuário foi estabelecida com a implementação completa do ciclo de vida do usuário. Isso inclui telas dedicadas para registro, login e recuperação de senha, todas conectadas diretamente ao serviço de autenticação do Firebase. Essa fundação garante um acesso seguro e individualizado à plataforma.
+
+### 2. Criação e Gestão de Salas
+Como pilar da interação, o aplicativo permite que os usuários criem e visualizem salas de discussão. A `CreateRoomActivity` possibilita a criação de novos espaços temáticos, enquanto a `RoomListActivity` e a seção correspondente na `HomeActivity` exibem as salas disponíveis, carregando dados dinamicamente do Firestore para fomentar a exploração e a descoberta de conteúdo.
+
+### 3. Sistema de Perguntas e Respostas (Q&A)
+O coração da comunidade JusCom reside no seu sistema de Perguntas e Respostas. O fluxo é completo: usuários podem listar as perguntas de uma sala (`QuestionListActivity`), visualizar os detalhes de uma pergunta específica (`QuestionDetailActivity`), submeter novas perguntas (`CreateQuestionActivity`), postar respostas e interagir através de um sistema de votos. A lógica de votação, implementada com transações atômicas no Firestore, assegura a integridade dos dados e um feedback de UI imediato, consolidando o ciclo de engajamento.
+
+### 4. Sistema de Incentivo e Gamificação (XP)
+Para motivar a participação, foi concebido um sistema de gamificação baseado em pontos de experiência (XP) e níveis. Ações como postar perguntas, responder e receber votos positivos contribuem para o acúmulo de pontos, armazenados no perfil do usuário no Firestore. Ao atingir marcos de pontuação, o nível do usuário é atualizado, com planos para notificações de "level up" e a futura implementação de emblemas para recompensar conquistas específicas.
+
+### 5. Opções e Perfil do Usuário
+A personalização e gestão da conta são centralizadas na `ProfileActivity` e `SettingsActivity`. Os usuários podem visualizar seus dados de perfil, como nível e pontos, que são carregados dinamicamente. A tela de configurações oferece opções importantes como a troca de tema (claro/escuro) e a exclusão da conta, dando ao usuário controle total sobre sua experiência e seus dados.
+
+### 6. Material de Estudo (Desenvolvimento Pausado)
+A funcionalidade de compartilhamento de materiais de estudo, embora planejada e com uma tela (`StudyMaterialActivity`) concebida, encontra-se atualmente em pausa. Devido a limitações no plano gratuito do Firebase Storage, a equipe está refatorando esta seção para utilizar o Supabase como provedor de armazenamento de arquivos. O desenvolvimento será retomado após a conclusão dessa migração técnica.
 
 ---
 
@@ -428,8 +452,22 @@ Supabase and AppWrite
 
 Issues:
 
-In the home page, the XP amount is not updating.
+**[RESOLVED]** In the activity that shows the questions of the room, but not the questions themselves, still have issues with updating the actual answer amount.
+**[PENDING VALIDATION]** In the home page, the XP amount is not updating.
 User cannot answer own question and upvote themselves.
-In the activity that shows the questions of the room, but not the questions themselves, still have issues with updating the actual answer amount.
 An elaborate toast for leveling up might be appreciated.
 Changing from dark to light mode causes flickers on the screen
+
+
+introdução
+O desenvolvimento nativo do aplicativo "JusCom" é fundamentado na utilização da linguagem Kotlin, escolhida como a linguagem de programação preferencial pelo Google para o ecossistema Android, devido à sua sintaxe concisa, expressiva e aos recursos intrínsecos de segurança contra exceções de ponteiro nulo (NullPointerException), que elevam a robustez do código e a produtividade do desenvolvedor (Google. Kotlin e Android). A implementação segue a arquitetura Model-View-ViewModel (MVVM), que promove a separação de responsabilidades (Separation of Concerns) ao isolar a lógica de interface (View) da lógica de back-end e manipulação de dados (Model), facilitando a testabilidade e a manutenção do sistema (Hulme et al., 2024).
+Como solução de Backend-as-a-Service (BaaS), o projeto adota o Firebase, que, através da infraestrutura robusta do Google Cloud, oferece serviços de escalabilidade automática, autenticação de usuários e armazenamento de dados em tempo real via Cloud Firestore (Firebase. Documentação do Desenvolvedor Firebase). Essa escolha de BaaS permite que a equipe de desenvolvimento se concentre exclusivamente na melhoria da experiência do usuário (front-end) e na lógica de negócios, otimizando o ciclo de desenvolvimento e implantação do produto. A organização do código em pacotes específicos (Activities, ViewModels, Repositories e Models) é uma prática fundamental para aderir aos princípios de arquitetura limpa e garantir a interoperabilidade e a longevidade do software.
+
+
+A interface
+A interface do "JusCom" é estruturada com o uso de XML para a definição de layouts e componentes, seguindo as diretrizes de design estabelecidas pelo Material Design. A adoção desta metodologia visa assegurar uma experiência de usuário (UX) consistente, intuitiva e em conformidade com os padrões de design do sistema operacional Android, empregando princípios como o uso de tipografia padronizada, hierarquia visual clara e interações táteis (Google. Material Design Guidelines).
+Para fomentar o engajamento e a qualidade das interações na comunidade, o aplicativo incorpora um sistema robusto de gamificação, que se manifesta através de níveis, emblemas e um sistema de votos. Tais elementos de design de jogos são aplicados em contextos não lúdicos, como o aprendizado jurídico, com o objetivo de motivar a participação ativa, o compartilhamento de conteúdo relevante e a retenção de conhecimento (Araújo, 2016; Benedito & Dos Santos, 2018). Essa estratégia de recompensa e reconhecimento social é comprovadamente eficaz para estimular o comportamento desejado dos usuários e garantir que a plataforma promova, de fato, a Educação de Qualidade (ODS 4) e o acesso à informação confiável.
+Funções essenciais do usuário:
+"A RegisterActivity orquestra o processo de criação de novas contas. A sua implementação é direta: ela captura os dados do formulário, realiza uma validação robusta em todos os campos para garantir a integridade dos dados e, em seguida, utiliza um AuthRepository para criar o usuário no Firebase Authentication. Em caso de sucesso, a lógica prossegue para criar um perfil correspondente no Firestore, inicializando dados cruciais como nome, nível e pontuação inicial. A utilização de lifecycleScope para as operações de rede é uma boa prática que protege a thread principal. Contudo, a classe ainda acopla a lógica de UI, de dados e de negócio, representando uma oportunidade clara para uma futura refatoração para o padrão MVVM (Model-View-ViewModel), o que alinharia esta tela com a arquitetura mais moderna já adotada em outras partes do aplicativo."
+"De forma complementar à tela de registro, a LoginActivity gerencia a autenticação de usuários existentes. O código demonstra uma abordagem pragmática, validando as credenciais do usuário e utilizando o AuthRepository para executar a tentativa de login. Um ponto positivo é a verificação inicial (checkIfUserIsLoggedIn), que, ao encontrar uma sessão ativa, redireciona o usuário para a HomeActivity, evitando etapas desnecessárias. A navegação para as telas de registro e recuperação de senha também está bem implementada. Assim como na RegisterActivity, esta classe se beneficiaria de uma refatoração para o padrão MVVM, o que separaria a lógica de autenticação da camada de apresentação e melhoraria a testabilidade do código."
+"Completando o trio de funcionalidades de autenticação, a PasswordRecoveryActivity oferece ao usuário um caminho para redefinir sua senha. A implementação atual é um esboço funcional, com a interface de usuário implementada, mas a lógica de negócio ainda pendente, marcada por um TODO. O botão de recuperação, no momento, exibe apenas uma notificação Toast informativa. A estrutura está pronta, aguardando a integração com o AuthRepository para invocar a função de envio de e-mail de recuperação do Firebase. A simplicidade desta tela a torna um candidato ideal para uma rápida refatoração para MVVM, garantindo a consistência arquitetural em todo o fluxo de autenticação."
