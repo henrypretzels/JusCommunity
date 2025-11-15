@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
@@ -20,6 +21,8 @@ class QuestionDetailViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val incentiveManager = IncentiveManager()
+    private var questionListenerRegistration: ListenerRegistration? = null
+    private var answersListenerRegistration: ListenerRegistration? = null
 
     private val _question = MutableLiveData<Question?>()
     val question: LiveData<Question?> = _question
@@ -42,19 +45,36 @@ class QuestionDetailViewModel : ViewModel() {
             return
         }
 
+        // Remove existing listeners if any
+        questionListenerRegistration?.remove()
+        answersListenerRegistration?.remove()
+
         val questionRef = firestore.collection("questions").document(questionId)
 
-        questionRef.get()
-            .addOnSuccessListener { document ->
+        // Set up real-time listener for question document
+        questionListenerRegistration = questionRef.addSnapshotListener { document, exception ->
+            if (exception != null) {
+                _error.value = "Failed to load question: ${exception.message}"
+                return@addSnapshotListener
+            }
+
+            if (document != null && document.exists()) {
                 val questionData = document.toObject(Question::class.java)
                 questionData?.id = document.id
                 _question.value = questionData
-            }
-            .addOnFailureListener { exception ->
-                _error.value = "Failed to load question: ${exception.message}"
-            }
 
-        firestore.collection("answers")
+                // Also try to correct the answer count here
+                val currentAnswers = _answers.value
+                if (questionData != null && currentAnswers != null && questionData.answerCount != currentAnswers.size.toLong()) {
+                    questionRef.update("answerCount", currentAnswers.size.toLong())
+                }
+            } else {
+                _error.value = "Question not found."
+            }
+        }
+
+        // Set up real-time listener for answers
+        answersListenerRegistration = firestore.collection("answers")
             .whereEqualTo("questionId", questionId)
             .orderBy("voteCount", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshots, e ->
@@ -63,20 +83,26 @@ class QuestionDetailViewModel : ViewModel() {
                     return@addSnapshotListener
                 }
 
-                val answerList = snapshots!!.documents.map { doc ->
+                val answerList = snapshots?.documents?.map { doc ->
                     val answer = doc.toObject(Answer::class.java)!!
                     answer.id = doc.id
                     answer
-                }
+                } ?: emptyList()
                 _answers.value = answerList
                 checkUserVotes(answerList.map { it.id })
 
                 // Correct the answer count if it's out of sync
                 val currentQuestion = _question.value
                 if (currentQuestion != null && currentQuestion.answerCount != answerList.size.toLong()) {
-                    questionRef.update("answerCount", answerList.size)
+                    questionRef.update("answerCount", answerList.size.toLong())
                 }
             }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        questionListenerRegistration?.remove()
+        answersListenerRegistration?.remove()
     }
 
     private fun checkUserVotes(answerIds: List<String>) {
