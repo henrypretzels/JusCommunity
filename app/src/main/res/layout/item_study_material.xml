@@ -4,101 +4,92 @@
     android:id="@+id/studyMaterialCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="6dp"
-    app:cardBackgroundColor="?attr/colorSurface"
-    app:strokeColor="?attr/colorSurfaceVariant"
-    app:strokeWidth="1dp"
+    android:layout_marginBottom="16dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/card_background"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/divider_color"
+    app:strokeWidth="1dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="20dp">
 
         <ImageView
             android:id="@+id/studyMaterialImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/circular_image"
             android:scaleType="centerCrop"
-            android:clipToOutline="true" />
+            android:src="@drawable/scales"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/studyMaterialTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginStart="16dp"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/studyMaterialImage"
+            app:layout_constraintTop_toTopOf="@id/studyMaterialImage" />
 
-            <TextView
-                android:id="@+id/studyMaterialTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Título do Material"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp" />
+        <TextView
+            android:id="@+id/studyMaterialDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/studyMaterialTitle"
+            app:layout_constraintTop_toBottomOf="@id/studyMaterialTitle" />
 
-            <TextView
-                android:id="@+id/studyMaterialDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Descrição do Material"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="14sp"
-                android:layout_marginBottom="12dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:lineSpacingExtra="2dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/studyMaterialCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_blue"
+            android:textAllCaps="false"
+            android:layout_marginTop="12dp"
+            app:chipBackgroundColor="@color/light_gray"
+            app:chipStrokeWidth="0dp"
+            app:layout_constraintStart_toStartOf="@id/studyMaterialTitle"
+            app:layout_constraintTop_toBottomOf="@id/studyMaterialDescription" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/studyMaterialAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/studyMaterialTitle"
+            app:layout_constraintTop_toBottomOf="@id/studyMaterialCategory" />
 
-                <TextView
-                    android:id="@+id/studyMaterialCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Categoria"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:background="?attr/colorPrimary"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_marginEnd="12dp" />
+        <TextView
+            android:id="@+id/studyMaterialDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/studyMaterialAuthor"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-                <TextView
-                    android:id="@+id/studyMaterialAuthor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Autor"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                 <TextView
-                    android:id="@+id/studyMaterialDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Data"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="13sp"
-                    android:layout_marginStart="12dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

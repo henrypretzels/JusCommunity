@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class StudyMaterialAdapter(
     private var materials: MutableList<StudyMaterial>,
@@ -43,7 +43,7 @@ class StudyMaterialAdapter(
         // Format timestamp to date string
         holder.materialDate.text = material.timestamp?.toDate()?.let {
             SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
-        } ?: "N/A"
+        } ?: holder.itemView.context.getString(R.string.study_material_local_label)
 
         holder.cardView.setOnClickListener {
             onMaterialClick(material)

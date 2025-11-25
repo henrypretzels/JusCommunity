@@ -1,31 +1,15 @@
 package br.com.example.juscom
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.example.juscom.databinding.ActivityStudyMaterialBinding
-import br.com.example.juscom.databinding.DialogAddStudyMaterialBinding
 
 class StudyMaterialActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudyMaterialBinding
     private lateinit var studyMaterialAdapter: StudyMaterialAdapter
-    private val viewModel: StudyMaterialViewModel by viewModels()
-
-    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.data?.let { uri ->
-                showAddMaterialDialog(uri)
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +18,8 @@ class StudyMaterialActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
-        observeViewModel()
-
-        binding.fabAddMaterial.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "*/*"
-            }
-            filePickerLauncher.launch(intent)
-        }
-
-        viewModel.loadStudyMaterials()
+        setupFab()
+        loadLocalStudyMaterials()
     }
 
     private fun setupToolbar() {
@@ -54,14 +30,7 @@ class StudyMaterialActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         studyMaterialAdapter = StudyMaterialAdapter(mutableListOf()) { material ->
-            material.fileUrl?.let {
-                if (it.isNotEmpty()) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Link do material indisponível.", Toast.LENGTH_SHORT).show()
-                }
-            }
+            showMaterialPreview(material)
         }
 
         binding.studyMaterialRecyclerView.apply {
@@ -70,45 +39,61 @@ class StudyMaterialActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeViewModel() {
-        viewModel.materials.observe(this) { materials ->
+    private fun setupFab() {
+        binding.fabAddMaterial.isVisible = false
+        binding.fabAddMaterial.setOnClickListener(null)
+    }
+
+    private fun loadLocalStudyMaterials() {
+        val directory = "materias de esrtudo"
+        val assetManager = assets
+        val files = assetManager.list(directory)?.sorted() ?: emptyList()
+
+        val materials = files.mapNotNull { fileName ->
+            val path = "$directory/$fileName"
+            val preview = readAssetFile(path)
+
+            StudyMaterial(
+                title = formatTitle(fileName),
+                description = preview.take(200).ifEmpty { getString(R.string.study_material_preview_placeholder) },
+                category = getString(R.string.study_material_mock_category),
+                authorName = getString(R.string.study_material_mock_author),
+                fileUrl = path
+            )
+        }
+
+        binding.studyMaterialRecyclerView.isVisible = materials.isNotEmpty()
+        binding.emptyStateText.isVisible = materials.isEmpty()
+        if (materials.isNotEmpty()) {
             studyMaterialAdapter.updateMaterials(materials)
-        }
-
-        viewModel.error.observe(this) { errorMessage ->
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-        }
-
-        viewModel.uploadSuccess.observe(this) { success ->
-            if (success) {
-                Toast.makeText(this, "Material enviado com sucesso!", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
-    private fun showAddMaterialDialog(fileUri: Uri) {
-        val dialogBinding = DialogAddStudyMaterialBinding.inflate(LayoutInflater.from(this))
+    private fun formatTitle(fileName: String): String {
+        val nameWithoutExtension = fileName.substringBeforeLast('.')
+        return nameWithoutExtension.split('_', '-')
+            .joinToString(" ") { word ->
+                word.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+            }
+    }
+
+    private fun readAssetFile(path: String): String {
+        return assets.open(path).bufferedReader().use { it.readText() }
+    }
+
+    private fun showMaterialPreview(material: StudyMaterial) {
+        val assetPath = material.fileUrl ?: return
+        val content = readAssetFile(assetPath)
 
         AlertDialog.Builder(this)
-            .setTitle("Adicionar Material")
-            .setView(dialogBinding.root)
-            .setPositiveButton("Enviar") { _, _ ->
-                val title = dialogBinding.titleEditText.text.toString()
-                val description = dialogBinding.descriptionEditText.text.toString()
-                val category = dialogBinding.categoryEditText.text.toString()
-
-                if (title.isNotEmpty() && description.isNotEmpty() && category.isNotEmpty()) {
-                    viewModel.uploadStudyMaterial(fileUri, title, description, category)
-                } else {
-                    Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancelar", null)
+            .setTitle(material.title)
+            .setMessage(content.take(1200))
+            .setPositiveButton(android.R.string.ok, null)
             .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 }

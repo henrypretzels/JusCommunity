@@ -1,0 +1,32 @@
+Compliance e Direito Empresarial Contemporâneo
+
+1. Estrutura societária
+1.1 Sociedade limitada, S.A. e sociedades unipessoais: panorama após a Lei 14.195/2021.
+1.2 Acordos de sócios e cláusulas de resolução de deadlock.
+1.3 Responsabilidade dos administradores e business judgment rule no Brasil.
+
+2. Governança e compliance
+2.1 Componentes essenciais de um programa de integridade (Lei 12.846/2013).
+2.2 Canal de denúncias, investigação interna e reporte ao conselho de administração.
+2.3 Due diligence anticorrupção em operações de M&A.
+
+3. Contratos empresariais
+3.1 Contratos de distribuição e agência: principais cláusulas de exclusividade.
+3.2 Contratos tecnológicos (SaaS e licenciamento) e LGPD.
+3.3 Cláusula hardship e renegociação em supply chain global.
+
+4. Recuperação judicial e falência
+4.1 Plano de recuperação: classes de credores, cram down e financiamento DIP.
+4.2 Mediação pré-processual e centros de prevenção de litígios empresariais.
+4.3 Falência transnacional e UNCITRAL Model Law.
+
+5. Direito do consumidor empresarial
+5.1 Teoria finalista aprofundada e aplicação do CDC a microempresas.
+5.2 Publicidade comparativa e greenwashing.
+5.3 Responsabilidade civil em marketplaces.
+
+6. Tendências
+6.1 ESG e disclosure obrigatório em companhias abertas.
+6.2 Tokenização de ativos e efeitos tributários.
+6.3 Inteligência artificial generativa em rotinas de compliance.
+

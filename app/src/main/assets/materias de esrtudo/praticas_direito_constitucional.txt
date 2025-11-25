@@ -1,0 +1,32 @@
+Práticas Avançadas de Direito Constitucional Aplicado
+
+1. Controle de constitucionalidade
+1.1 Ações de controle concentrado: ADI, ADC, ADPF e ADO.
+1.2 Modulação de efeitos e teoria da declaração interpretativa.
+1.3 Controle difuso com repercussão geral e súmula vinculante.
+
+2. Direitos fundamentais em tempos de crise
+2.1 Colisão entre liberdade de expressão e proteção da honra nas mídias digitais.
+2.2 Estado de sítio, defesa e intervenção federal: limites materiais.
+2.3 Jurisprudência do STF sobre liberdade religiosa em políticas de vacinação.
+
+3. Organização do Estado
+3.1 Federalismo cooperativo e repartição de competências ambientais.
+3.2 Autonomia municipal e consórcios públicos para saúde.
+3.3 Relações entre União e estados em políticas fiscais (Lei Complementar 179/2021).
+
+4. Poder Legislativo
+4.1 Processo legislativo bicameral, emendas constitucionais e PECs paralelas.
+4.2 Comissões parlamentares de inquérito: poderes investigativos e limites.
+4.3 Medidas provisórias e o princípio da relevância e urgência.
+
+5. Poder Executivo
+5.1 Competência regulamentar e decreto autônomo.
+5.2 Responsabilidade do presidente por crime de responsabilidade (Lei 1.079/1950).
+5.3 Agências reguladoras e delegação legislativa.
+
+6. Poder Judiciário
+6.1 Garantias da magistratura e Conselho Nacional de Justiça.
+6.2 Mandado de injunção coletivo e efetividade de políticas públicas.
+6.3 Judicialização da saúde e parâmetros de deferimento de medicamentos não registrados.
+

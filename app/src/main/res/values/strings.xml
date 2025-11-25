@@ -31,6 +31,11 @@
     <string name="study_material">Material de Estudo</string>
     <string name="study_material_title">Material de Estudo</string>
     <string name="add_study_material">Adicionar material de estudo</string>
+    <string name="study_material_mock_category">Conteúdo interno</string>
+    <string name="study_material_mock_author">Equipe JusCommunity</string>
+    <string name="study_material_preview_placeholder">Material disponível para download interno.</string>
+    <string name="study_material_local_label">Disponível offline</string>
+    <string name="study_material_empty_state">Nenhum material disponível no momento.</string>
     <string name="material_title_hint">Título do material</string>
     <string name="material_description_hint">Descrição do material</string>
     <string name="material_category_hint">Categoria do material</string>
